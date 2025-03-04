@@ -1,9 +1,12 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Inject } from '@nestjs/common';
+import { HabitsService } from './habits.service';
 
 @Controller('habits')
 export class HabitsController {
+  constructor(private readonly habitsService: HabitsService) {}
+
   @Get()
   findAll() {
-    return ['Habits 1', 'Habits 2'];
+    return this.habitsService.findAll();
   }
 }
