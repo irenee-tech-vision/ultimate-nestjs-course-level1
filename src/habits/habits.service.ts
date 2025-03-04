@@ -1,17 +1,15 @@
 import { Injectable } from '@nestjs/common';
+import { InMemoryHabitsRepository } from './repositories/in-memory-habits.repository';
 
 @Injectable()
 export class HabitsService {
+  constructor(private readonly habitsRepository: InMemoryHabitsRepository) {}
+
   findAll() {
-    return [
-      {
-        id: '1',
-        name: 'Habit 1'
-      },
-      {
-        id: '2',
-        name: 'Habit 2'
-      }
-    ]
+    return this.habitsRepository.findAllHabits();
+  }
+
+  create(createHabitInput) {
+    return this.habitsRepository.createHabit(createHabitInput)
   }
 }
