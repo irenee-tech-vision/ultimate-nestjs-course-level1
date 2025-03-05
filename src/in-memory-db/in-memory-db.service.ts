@@ -13,6 +13,18 @@ export class InMemoryDbService {
     return this.getEntitiesStoreByName(entityName);
   }
 
+  findOneBy(entityName: string, filter: { [key: string]: any }) {
+    const entities = this.getEntitiesStoreByName(entityName);
+
+    return entities.find((entity) => {
+      const isMatchingFilter = Object.keys(filter).every(
+        (key) => entity[key] === filter[key],
+      );
+
+      return isMatchingFilter;
+    });
+  }
+
   private getEntitiesStoreByName(entityName: string) {
     if (!this.store.has(entityName)) {
       this.store.set(entityName, []);

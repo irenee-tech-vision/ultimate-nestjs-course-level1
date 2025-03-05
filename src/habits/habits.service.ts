@@ -9,7 +9,11 @@ export class HabitsService {
     return this.habitsRepository.findAllHabits();
   }
 
+  findOne(id: number) {
+    return this.habitsRepository.findHabitById(id);
+  }
+
   create(createHabitInput) {
-    return this.habitsRepository.createHabit(createHabitInput)
+    return this.habitsRepository.createHabit(createHabitInput);
   }
 }

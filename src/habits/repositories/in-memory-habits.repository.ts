@@ -9,6 +9,10 @@ export class InMemoryHabitsRepository {
     return this.db.findAll('habits');
   }
 
+  findHabitById(id: number) {
+    return this.db.findOneBy('habits', { id });
+  }
+
   createHabit(createHabitInput) {
     const newHabit = {
       ...createHabitInput,
