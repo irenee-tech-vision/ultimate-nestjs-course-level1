@@ -21,4 +21,12 @@ export class InMemoryHabitsRepository {
 
     return this.db.create('habits', newHabit);
   }
+
+  updateHabit(id: number, updateInput) {
+    return this.db.updateOneBy('habits', { id }, updateInput);
+  }
+
+  removeHabit(id: number) {
+    return this.db.deleteOneBy('habits', { id });
+  }
 }

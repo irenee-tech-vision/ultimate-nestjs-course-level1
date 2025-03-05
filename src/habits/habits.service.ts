@@ -16,4 +16,12 @@ export class HabitsService {
   create(createHabitInput) {
     return this.habitsRepository.createHabit(createHabitInput);
   }
+
+  remove(id: number) {
+    return this.habitsRepository.removeHabit(id);
+  }
+
+  update(id: number, updateInput) {
+    return this.habitsRepository.updateHabit(id, updateInput);
+  }
 }

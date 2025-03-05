@@ -25,6 +25,36 @@ export class InMemoryDbService {
     });
   }
 
+  deleteOneBy(entityName: string, filter: { [key: string]: any }) {
+    const entities = this.getEntitiesStoreByName(entityName);
+    const entityIndex = entities.findIndex((entity) => {
+      return Object.keys(filter).every((key) => entity[key] === filter[key]);
+    });
+
+    if (entityIndex === -1) {
+      return undefined;
+    }
+
+    const deletedEntity = entities[entityIndex];
+    entities.splice(entityIndex, 1);
+    return deletedEntity;
+  }
+
+  updateOneBy(entityName: string, filter: { [key: string]: any }, updateInput) {
+    const entities = this.getEntitiesStoreByName(entityName);
+    const entityIndex = entities.findIndex((entity) => {
+      return Object.keys(filter).every((key) => entity[key] === filter[key]);
+    });
+
+    if (entityIndex === -1) {
+      return undefined;
+    }
+
+    const updatedEntity = { ...entities[entityIndex], ...updateInput };
+    entities[entityIndex] = updatedEntity;
+    return updatedEntity;
+  }
+
   private getEntitiesStoreByName(entityName: string) {
     if (!this.store.has(entityName)) {
       this.store.set(entityName, []);
