@@ -1,15 +1,15 @@
-import { HabitDto } from '../../dto/habit.dto';
+import { HabitModel } from '../../services/models/habit.model';
 import { HabitEntity } from '../entities/habit.entity';
 
-export const mapHabitEntityToHabitDto = (
+export const mapHabitEntityToHabitModel = (
   entity?: HabitEntity,
-): HabitDto | undefined => {
+): HabitModel | undefined => {
   if (!entity) {
     return undefined;
   }
 
   return {
-    id: entity.habitId,
+    habitId: entity.habitId,
     name: entity.name,
     description: entity.description,
   };

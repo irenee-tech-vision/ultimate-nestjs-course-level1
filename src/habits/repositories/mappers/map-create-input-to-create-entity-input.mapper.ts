@@ -1,13 +1,14 @@
 import { CreateEntityInput } from '../../../in-memory-db/models/create-entity-input.type';
-import { CreateHabitDto } from '../../dto/create-habit.dto';
+import { CreateHabitDto } from '../../controllers/dto/create-habit.dto';
+import { CreateHabitInput } from '../../services/models/create-habit.input';
 import { HabitEntity } from '../entities/habit.entity';
 
-export const mapCreateHabitDtoToCreateEntityInput = (
-  createHabitDto: CreateHabitDto,
+export const mapCreateHabitInputToCreateEntityInput = (
+  createHabitInput: CreateHabitInput,
 ): CreateEntityInput<HabitEntity> => {
   const now = new Date();
   return {
-    ...createHabitDto,
+    ...createHabitInput,
     habitId: now.getTime(),
     createdAt: now,
     updatedAt: now,
