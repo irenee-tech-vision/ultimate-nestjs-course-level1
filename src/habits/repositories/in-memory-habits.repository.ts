@@ -1,14 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { InMemoryDbService } from '../../in-memory-db/in-memory-db.service';
+import { CreateHabitDto } from '../dto/create-habit.dto';
 import { HabitDto } from '../dto/habit.dto';
+import { UpdateHabitDto } from '../dto/update-habit.dto';
 import { HabitEntity } from './entities/habit.entity';
+import { mapCreateHabitDtoToCreateEntityInput } from './mappers/map-create-dto-to-create-entity-input.mapper';
 import { mapHabitEntityToHabitDto } from './mappers/map-habit-entity-to-habit-dto';
+import { mapUpdateHabitDtoToUpdateEntityInput } from './mappers/map-update-habit-dto-to-update-entity-input';
 
 @Injectable()
 export class InMemoryHabitsRepository {
   constructor(private readonly db: InMemoryDbService) {}
 
-  findAllHabits(query: { limit?: number; sortBy?: string }): HabitDto[] {
+  findAllHabits(query: { limit?: number; sortBy?: 'name' | 'id' }): HabitDto[] {
     const habitsEntities = this.db.findAll<HabitEntity>('habits', query);
 
     return habitsEntities.map(
@@ -17,36 +21,34 @@ export class InMemoryHabitsRepository {
   }
 
   findHabitById(id: number): HabitDto | undefined {
-    const habitEntity = this.db.findOneBy<HabitEntity>('habits', { id });
+    const habitEntity = this.db.findOneBy<HabitEntity>('habits', {
+      habitId: id,
+    });
     return mapHabitEntityToHabitDto(habitEntity);
   }
 
-  createHabit(createHabitInput): HabitDto {
-    const now = new Date();
-
-    const newHabit: HabitEntity = {
-      ...createHabitInput,
-      habitId: now.getTime(),
-      updatedAt: now,
-      createdAt: now,
-    };
-
-    const habitEntity = this.db.create<HabitEntity>('habits', newHabit);
+  createHabit(createHabitInput: CreateHabitDto): HabitDto {
+    const habitEntity = this.db.create<HabitEntity>(
+      'habits',
+      mapCreateHabitDtoToCreateEntityInput(createHabitInput),
+    );
     return mapHabitEntityToHabitDto(habitEntity)!;
   }
 
-  updateHabit(id: number, updateInput): HabitDto | undefined {
+  updateHabit(id: number, updateInput: UpdateHabitDto): HabitDto | undefined {
     const habitEntity = this.db.updateOneBy<HabitEntity>(
       'habits',
-      { id },
-      { ...updateInput, updatedAt: new Date() },
+      { habitId: id },
+      mapUpdateHabitDtoToUpdateEntityInput(updateInput),
     );
 
     return mapHabitEntityToHabitDto(habitEntity);
   }
 
   removeHabit(id: number): HabitDto | undefined {
-    const habitEntity = this.db.deleteOneBy<HabitEntity>('habits', { id });
+    const habitEntity = this.db.deleteOneBy<HabitEntity>('habits', {
+      habitId: id,
+    });
     return mapHabitEntityToHabitDto(habitEntity);
   }
 }

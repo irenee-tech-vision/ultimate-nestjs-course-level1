@@ -13,6 +13,8 @@ import {
 } from '@nestjs/common';
 import { HabitsService } from './habits.service';
 import { HabitDto } from './dto/habit.dto';
+import { CreateHabitDto } from './dto/create-habit.dto';
+import { UpdateHabitDto } from './dto/update-habit.dto';
 
 @Controller('habits')
 export class HabitsController {
@@ -21,7 +23,7 @@ export class HabitsController {
   @Get()
   findAll(
     @Query('limit') limit: string,
-    @Query('sortBy') sortBy: string,
+    @Query('sortBy') sortBy: 'name' | 'id',
   ): HabitDto[] | Promise<HabitDto[]> {
     const limitNumber = limit ? +limit : undefined;
     return this.habitsService.findAll({ limit: limitNumber, sortBy });
@@ -40,14 +42,14 @@ export class HabitsController {
   }
 
   @Post()
-  create(@Body() createHabitInput): HabitDto | Promise<HabitDto> {
+  create(@Body() createHabitInput: CreateHabitDto): HabitDto | Promise<HabitDto> {
     return this.habitsService.create(createHabitInput);
   }
 
   @Patch(':id')
   update(
     @Param('id') id: string,
-    @Body() input,
+    @Body() input: UpdateHabitDto,
   ): HabitDto | undefined | Promise<HabitDto | undefined> {
     const habit = this.habitsService.update(+id, input);
 
