@@ -1,11 +1,13 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Optional } from '@nestjs/common';
 import { randomUUID } from 'crypto';
+import * as fs from 'fs';
+
 import { StoreItemEntity } from './models/store-item.entity';
 import { CreateEntityInput } from './models/create-entity-input.type';
 import { UpdateEntityInput } from './models/update-entity-input.type';
 import { FindAllQuery } from './models/find-all-query.type';
 import { FindOneQuery } from './models/find-one-query.type';
-import { SEED_DATA_TOKEN } from './constant';
+import { PERSIST_DATA_PATH_TOKEN, SEED_DATA_TOKEN } from './constant';
 
 @Injectable()
 export class InMemoryDbService {
@@ -14,6 +16,9 @@ export class InMemoryDbService {
   constructor(
     @Inject(SEED_DATA_TOKEN)
     private readonly seedData: Record<string, StoreItemEntity[]>,
+    @Optional()
+    @Inject(PERSIST_DATA_PATH_TOKEN)
+    private readonly persistDataPath: string,
   ) {
     this.store = new Map(Object.entries(this.seedData));
   }
@@ -28,6 +33,8 @@ export class InMemoryDbService {
     } as EntityModel;
 
     this.getEntitiesStoreByName<EntityModel>(entityName).push(entityModel);
+
+    this.saveStore();
     return entityModel;
   }
 
@@ -106,6 +113,7 @@ export class InMemoryDbService {
 
     const updatedEntity = { ...entities[entityIndex], ...updateInput };
     entities[entityIndex] = updatedEntity;
+    this.saveStore();
     return updatedEntity;
   }
 
@@ -117,5 +125,14 @@ export class InMemoryDbService {
     }
 
     return this.store.get(entityName) as EntityModel[];
+  }
+
+  private saveStore() {
+    if (this.persistDataPath) {
+      fs.writeFileSync(
+        this.persistDataPath,
+        JSON.stringify(Object.fromEntries(this.store.entries()), null, 2),
+      );
+    }
   }
 }
