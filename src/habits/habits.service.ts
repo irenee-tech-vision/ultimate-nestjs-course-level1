@@ -5,8 +5,11 @@ import { InMemoryHabitsRepository } from './repositories/in-memory-habits.reposi
 export class HabitsService {
   constructor(private readonly habitsRepository: InMemoryHabitsRepository) {}
 
-  findAll() {
-    return this.habitsRepository.findAllHabits();
+  findAll(query: { limit?: number; sortBy?: string }) {
+    const limit = query.limit ?? 1;
+    const sortBy = query.sortBy ?? 'name';
+
+    return this.habitsRepository.findAllHabits({ limit, sortBy });
   }
 
   findOne(id: number) {

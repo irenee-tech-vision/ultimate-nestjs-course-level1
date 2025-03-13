@@ -5,8 +5,8 @@ import { InMemoryDbService } from '../../in-memory-db/in-memory-db.service';
 export class InMemoryHabitsRepository {
   constructor(private readonly db: InMemoryDbService) {}
 
-  findAllHabits() {
-    return this.db.findAll('habits');
+  findAllHabits(query: { limit?: number; sortBy?: string }) {
+    return this.db.findAll('habits', query);
   }
 
   findHabitById(id: number) {

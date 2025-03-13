@@ -9,6 +9,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { HabitsService } from './habits.service';
 
@@ -17,8 +18,9 @@ export class HabitsController {
   constructor(private readonly habitsService: HabitsService) {}
 
   @Get()
-  findAll() {
-    return this.habitsService.findAll();
+  findAll(@Query('limit') limit: string, @Query('sortBy') sortBy: string) {
+    const limitNumber = limit ? +limit : undefined;
+    return this.habitsService.findAll({ limit: limitNumber, sortBy });
   }
 
   @Get(':id')
