@@ -12,6 +12,9 @@ import * as Joi from 'joi';
           .default('fixtures/seed-data.json')
           .regex(/\.json$/),
         DEFAULT_LIMIT: Joi.number().optional().integer().positive().default(10),
+        MONGO_URI: Joi.string()
+          .optional()
+          .default('mongodb://localhost:27017/habit-tracker'),
       }),
     }),
   ],
@@ -19,4 +22,3 @@ import * as Joi from 'joi';
   exports: [AppConfigService],
 })
 export class AppConfigModule {}
-
