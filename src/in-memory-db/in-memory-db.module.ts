@@ -1,4 +1,9 @@
-import { DynamicModule, Module } from '@nestjs/common';
+import {
+  DynamicModule,
+  FactoryProvider,
+  Module,
+  ModuleMetadata,
+} from '@nestjs/common';
 import {
   PERSIST_DATA_PATH_TOKEN,
   REPOSITORY_ENTITY_NAME_TOKEN,
@@ -24,6 +29,32 @@ export class InMemoryDbModule {
         {
           provide: SEED_DATA_PATH_TOKEN,
           useValue: options.seedDataFilePath,
+        },
+      ],
+      exports: [InMemoryDbService],
+    };
+  }
+
+  static forRootAsync(options: {
+    useFactory: (...args: any) => Promise<string> | string;
+    inject?: FactoryProvider['inject'];
+    imports?: ModuleMetadata['imports'];
+  }): DynamicModule {
+    return {
+      module: InMemoryDbModule,
+      global: true,
+      imports: options.imports ?? [],
+      providers: [
+        InMemoryDbService,
+        SeedDataProvider,
+        {
+          provide: PERSIST_DATA_PATH_TOKEN,
+          useExisting: SEED_DATA_PATH_TOKEN,
+        },
+        {
+          provide: SEED_DATA_PATH_TOKEN,
+          useFactory: options.useFactory,
+          inject: options.inject ?? [],
         },
       ],
       exports: [InMemoryDbService],

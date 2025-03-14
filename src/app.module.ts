@@ -4,14 +4,18 @@ import { AppService } from './app.service';
 import { HabitsModule } from './habits/habits.module';
 import { AnalyticsModule } from './analytics/analytics.module';
 import { InMemoryDbModule } from './in-memory-db/in-memory-db.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
     HabitsModule,
     AnalyticsModule,
-    InMemoryDbModule.forRoot({
-      seedDataFilePath: 'fixtures/seed-data.json',
+    InMemoryDbModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (config: ConfigService) => {
+        return config.get('SEED_DATA_FILE_PATH')!;
+      },
+      inject: [ConfigService],
     }),
     ConfigModule.forRoot(),
   ],
