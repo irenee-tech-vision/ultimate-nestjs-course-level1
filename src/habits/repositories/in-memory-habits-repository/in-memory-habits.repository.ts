@@ -1,15 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { InMemoryDbRepository } from '../../in-memory-db/in-memory-db.repository';
-import { CreateHabitInput } from '../services/models/create-habit.input';
-import { HabitModel } from '../services/models/habit.model';
-import { UpdateHabitInput } from '../services/models/update-habit.input';
+import { InMemoryDbRepository } from '../../../in-memory-db/in-memory-db.repository';
+import { HabitsRepository } from '../../services/habits.repository';
+import { CreateHabitInput } from '../../services/models/create-habit.input';
+import { HabitModel } from '../../services/models/habit.model';
+import { UpdateHabitInput } from '../../services/models/update-habit.input';
 import { HabitEntity } from './entities/habit.entity';
 import { mapCreateHabitInputToCreateEntityInput } from './mappers/map-create-input-to-create-entity-input.mapper';
 import { mapHabitEntityToHabitModel } from './mappers/map-habit-entity-to-habit-model';
 import { mapUpdateHabitModelToUpdateEntityInput } from './mappers/map-update-habit-input-to-update-entity-input';
 
 @Injectable()
-export class InMemoryHabitsRepository {
+export class InMemoryHabitsRepository implements HabitsRepository {
   constructor(private readonly db: InMemoryDbRepository<HabitEntity>) {}
 
   findAllHabits(query: {

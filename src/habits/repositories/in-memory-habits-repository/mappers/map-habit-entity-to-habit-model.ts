@@ -1,4 +1,4 @@
-import { HabitModel } from '../../services/models/habit.model';
+import { HabitModel } from '../../../services/models/habit.model';
 import { HabitEntity } from '../entities/habit.entity';
 
 export const mapHabitEntityToHabitModel = (
