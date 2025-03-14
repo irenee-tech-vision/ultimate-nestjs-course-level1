@@ -5,19 +5,21 @@ import { HabitsModule } from './habits/habits.module';
 import { AnalyticsModule } from './analytics/analytics.module';
 import { InMemoryDbModule } from './in-memory-db/in-memory-db.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AppConfigModule } from './app-config/app-config.module';
+import { AppConfigService } from './app-config/app-config.service';
 
 @Module({
   imports: [
     HabitsModule,
     AnalyticsModule,
     InMemoryDbModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: async (config: ConfigService) => {
-        return config.get('SEED_DATA_FILE_PATH')!;
+      imports: [AppConfigModule],
+      useFactory: async (config: AppConfigService) => {
+        return config.seedDataFilePath;
       },
-      inject: [ConfigService],
+      inject: [AppConfigService],
     }),
-    ConfigModule.forRoot(),
+    AppConfigModule,
   ],
   controllers: [AppController],
   providers: [AppService],

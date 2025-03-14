@@ -4,20 +4,20 @@ import { HabitModel } from './models/habit.model';
 import { UpdateHabitInput } from './models/update-habit.input';
 import { InMemoryHabitsRepository } from '../repositories/in-memory-habits.repository';
 import { ConfigService } from '@nestjs/config';
+import { AppConfigService } from '../../app-config/app-config.service';
 
 @Injectable()
 export class HabitsService {
   constructor(
     private readonly habitsRepository: InMemoryHabitsRepository,
-    private readonly configService: ConfigService,
+    private readonly appConfigService: AppConfigService,
   ) {}
 
   findAll(query: {
     limit?: number;
     sortBy?: 'name' | 'id';
   }): HabitModel[] | Promise<HabitModel[]> {
-    const defaultLimit = this.configService.get('DEFAULT_LIMIT');
-    const limit = query.limit ?? parseInt(defaultLimit ?? '3');
+    const limit = query.limit ?? this.appConfigService.defaultLimit;
     const sortBy = query.sortBy ?? 'name';
 
     return this.habitsRepository.findAllHabits({ limit, sortBy });
