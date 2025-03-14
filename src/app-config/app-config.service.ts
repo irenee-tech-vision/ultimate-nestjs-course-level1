@@ -6,13 +6,10 @@ export class AppConfigService {
   constructor(private readonly configService: ConfigService) {}
 
   get seedDataFilePath(): string {
-    return this.configService.get(
-      'SEED_DATA_FILE_PATH',
-      'fixtures/seed-data.json',
-    );
+    return this.configService.get<string>('SEED_DATA_FILE_PATH')!;
   }
 
   get defaultLimit(): number {
-    return parseInt(this.configService.get('DEFAULT_LIMIT', '10'));
+    return this.configService.get<number>('DEFAULT_LIMIT')!;
   }
 }
