@@ -1,28 +1,6 @@
 {
   "habits": [
     {
-      "id": "a",
-      "habitId": 1,
-      "name": "drink water",
-      "description": "drink 2L of water daily",
-      "createdAt": "2023-01-02T00:00:00.000Z",
-      "updatedAt": "2023-01-03T00:00:00.000Z"
-    },
-    {
-      "id": "b",
-      "habitId": 2,
-      "name": "sleep 8 hours",
-      "createdAt": "2024-01-04T00:00:00.000Z",
-      "updatedAt": "2024-01-05T00:00:00.000Z"
-    },
-    {
-      "id": "c",
-      "habitId": 3,
-      "name": "walk 5K",
-      "createdAt": "2025-02-10T00:00:00.000Z",
-      "updatedAt": "2025-02-11T00:00:00.000Z"
-    },
-    {
       "name": "Go for walks",
       "description": "every day",
       "habitId": 1741904578050,
@@ -39,36 +17,84 @@
       "id": "8ceb5a02-de12-4008-ab9a-dd9082477a10"
     },
     {
-      "name": "A",
-      "description": "B",
-      "habitId": 1741906993049,
-      "createdAt": "2025-03-13T23:03:13.049Z",
-      "updatedAt": "2025-03-13T23:03:13.049Z",
-      "id": "d21d7777-7d2e-4c0e-81d7-1c58d1f49a66"
+      "name": "Read a book",
+      "description": "30 minutes per day",
+      "habitId": 1741938594175,
+      "createdAt": "2025-03-14T07:49:54.175Z",
+      "updatedAt": "2025-03-14T07:49:54.175Z",
+      "id": "df630b4a-c58a-4bac-8a89-3534d2e9d816"
     },
     {
-      "name": "foo",
-      "description": "baz",
-      "habitId": 1741906999312,
-      "createdAt": "2025-03-13T23:03:19.312Z",
-      "updatedAt": "2025-03-13T23:03:26.109Z",
-      "id": "273e61b5-5c0c-476d-9c31-27dd0f7d167d"
+      "name": "Drink water",
+      "description": "8 glasses per day",
+      "habitId": 1741938595175,
+      "createdAt": "2025-03-14T07:50:54.175Z",
+      "updatedAt": "2025-03-14T07:50:54.175Z",
+      "id": "f66e93b9-3950-4685-b648-51fb54b5863e"
     },
     {
-      "name": "C",
-      "description": "D",
-      "habitId": 1741907013553,
-      "createdAt": "2025-03-13T23:03:33.553Z",
-      "updatedAt": "2025-03-13T23:03:33.553Z",
-      "id": "f21eb22c-f3d5-49f0-9eed-32c28033219c"
+      "name": "Exercise",
+      "description": "Workout for 45 minutes",
+      "habitId": 1741938596175,
+      "createdAt": "2025-03-14T07:51:54.175Z",
+      "updatedAt": "2025-03-14T07:51:54.175Z",
+      "id": "6307f6bf-3cf3-420e-b9ce-bb4ecc361324"
     },
     {
-      "name": "C",
-      "description": "D",
-      "habitId": 1741907273325,
-      "createdAt": "2025-03-13T23:07:53.325Z",
-      "updatedAt": "2025-03-13T23:07:53.325Z",
-      "id": "0200ba08-e41a-48c8-b7d2-d6378c46bd9f"
+      "name": "Meditation",
+      "description": "10 minutes daily",
+      "habitId": 1741938597175,
+      "createdAt": "2025-03-14T07:52:54.175Z",
+      "updatedAt": "2025-03-14T07:52:54.175Z",
+      "id": "a1765da1-b422-497c-98c5-0042e17b8eda"
+    },
+    {
+      "name": "Journal",
+      "description": "Write down thoughts before bed",
+      "habitId": 1741938598175,
+      "createdAt": "2025-03-14T07:53:54.175Z",
+      "updatedAt": "2025-03-14T07:53:54.175Z",
+      "id": "cc62409f-5f2c-459a-aa19-25946964df9f"
+    },
+    {
+      "name": "Learn a new word",
+      "description": "Expand vocabulary daily",
+      "habitId": 1741938599175,
+      "createdAt": "2025-03-14T07:54:54.175Z",
+      "updatedAt": "2025-03-14T07:54:54.175Z",
+      "id": "89a415b1-24c8-4863-b46c-4aa8bcc7a141"
+    },
+    {
+      "name": "Practice coding",
+      "description": "Solve one problem daily",
+      "habitId": 1741938600175,
+      "createdAt": "2025-03-14T07:55:54.175Z",
+      "updatedAt": "2025-03-14T07:55:54.175Z",
+      "id": "7710bbba-a8fc-4589-999e-2195c124b7d3"
+    },
+    {
+      "name": "No social media",
+      "description": "Avoid for at least 2 hours",
+      "habitId": 1741938601175,
+      "createdAt": "2025-03-14T07:56:54.175Z",
+      "updatedAt": "2025-03-14T07:56:54.175Z",
+      "id": "31c1015b-e864-4e42-b3a0-fa1c5ffceb5d"
+    },
+    {
+      "name": "Sleep early",
+      "description": "Go to bed before 11 PM",
+      "habitId": 1741938602175,
+      "createdAt": "2025-03-14T07:57:54.175Z",
+      "updatedAt": "2025-03-14T07:57:54.175Z",
+      "id": "fc65d1c1-0c40-4e0e-b29e-e600b6120ccd"
+    },
+    {
+      "name": "Plan tomorrow",
+      "description": "Write down tasks for the next day",
+      "habitId": 1741938603175,
+      "createdAt": "2025-03-14T07:58:54.175Z",
+      "updatedAt": "2025-03-14T07:58:54.175Z",
+      "id": "583c89b2-8969-4ce6-8d3f-a855e2733e9f"
     }
   ],
   "analytics": [
