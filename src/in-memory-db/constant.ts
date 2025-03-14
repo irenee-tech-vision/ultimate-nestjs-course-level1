@@ -3,3 +3,5 @@ export const SEED_DATA_TOKEN = Symbol('SEED_DATA');
 export const SEED_DATA_PATH_TOKEN = Symbol('SEED_DATA_PATH');
 
 export const PERSIST_DATA_PATH_TOKEN = Symbol('PERSIST_DATA_PATH');
+
+export const REPOSITORY_ENTITY_NAME_TOKEN = Symbol('REPOSITORY_ENTITY_NAME');

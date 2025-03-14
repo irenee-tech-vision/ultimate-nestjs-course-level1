@@ -94,6 +94,8 @@ export class InMemoryDbService {
 
     const deletedEntity = entities[entityIndex];
     entities.splice(entityIndex, 1);
+
+    this.saveStore();
     return deletedEntity;
   }
 

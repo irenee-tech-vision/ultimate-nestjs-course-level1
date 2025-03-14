@@ -21,6 +21,70 @@
       "name": "walk 5K",
       "createdAt": "2025-02-10T00:00:00.000Z",
       "updatedAt": "2025-02-11T00:00:00.000Z"
+    },
+    {
+      "name": "Go for walks",
+      "description": "every day",
+      "habitId": 1741904578050,
+      "createdAt": "2025-03-13T22:22:58.050Z",
+      "updatedAt": "2025-03-13T22:22:58.050Z",
+      "id": "44b92e47-78a3-4f91-977d-1c2052105ac3"
+    },
+    {
+      "name": "Go for walks",
+      "description": "every day",
+      "habitId": 1741906981083,
+      "createdAt": "2025-03-13T23:03:01.083Z",
+      "updatedAt": "2025-03-13T23:03:01.083Z",
+      "id": "8ceb5a02-de12-4008-ab9a-dd9082477a10"
+    },
+    {
+      "name": "A",
+      "description": "B",
+      "habitId": 1741906993049,
+      "createdAt": "2025-03-13T23:03:13.049Z",
+      "updatedAt": "2025-03-13T23:03:13.049Z",
+      "id": "d21d7777-7d2e-4c0e-81d7-1c58d1f49a66"
+    },
+    {
+      "name": "foo",
+      "description": "baz",
+      "habitId": 1741906999312,
+      "createdAt": "2025-03-13T23:03:19.312Z",
+      "updatedAt": "2025-03-13T23:03:26.109Z",
+      "id": "273e61b5-5c0c-476d-9c31-27dd0f7d167d"
+    },
+    {
+      "name": "C",
+      "description": "D",
+      "habitId": 1741907013553,
+      "createdAt": "2025-03-13T23:03:33.553Z",
+      "updatedAt": "2025-03-13T23:03:33.553Z",
+      "id": "f21eb22c-f3d5-49f0-9eed-32c28033219c"
+    },
+    {
+      "name": "C",
+      "description": "D",
+      "habitId": 1741907273325,
+      "createdAt": "2025-03-13T23:07:53.325Z",
+      "updatedAt": "2025-03-13T23:07:53.325Z",
+      "id": "0200ba08-e41a-48c8-b7d2-d6378c46bd9f"
+    }
+  ],
+  "analytics": [
+    {
+      "timestamp": "2025-03-13T22:22:33.319Z",
+      "data": {
+        "message": "Hello from the AppController"
+      },
+      "id": "15a33d30-2009-429b-9d4e-22a167d82c03"
+    },
+    {
+      "timestamp": "2025-03-13T22:22:36.450Z",
+      "data": {
+        "message": "Hello from the AppController"
+      },
+      "id": "87792271-8764-4cb3-802b-f6a0d69b6e09"
     }
   ]
 }

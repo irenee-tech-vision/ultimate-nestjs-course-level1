@@ -5,7 +5,11 @@ import { InMemoryHabitsRepository } from './repositories/in-memory-habits.reposi
 import { HabitsService } from './services/habits.service';
 
 @Module({
-  imports: [InMemoryDbModule],
+  imports: [
+    InMemoryDbModule.forFeature({
+      entityName: 'habits',
+    }),
+  ],
   controllers: [HabitsController],
   providers: [HabitsService, InMemoryHabitsRepository],
 })

@@ -1,0 +1,12 @@
+{
+  "habits": [
+    {
+      "name": "Go for walks",
+      "description": "every day",
+      "habitId": 1741903573148,
+      "createdAt": "2025-03-13T22:06:13.148Z",
+      "updatedAt": "2025-03-13T22:06:13.148Z",
+      "id": "98dae323-fc8b-42ad-9014-e515173eef67"
+    }
+  ]
+}
