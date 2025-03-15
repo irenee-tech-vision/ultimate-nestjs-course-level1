@@ -5,7 +5,7 @@ import { CreateHabitInput } from '../../services/models/create-habit.input';
 import { HabitModel } from '../../services/models/habit.model';
 import { UpdateHabitInput } from '../../services/models/update-habit.input';
 import { HabitEntity } from './entities/habit.entity';
-import { mapCreateHabitInputToCreateEntityInput } from './mappers/map-create-input-to-create-entity-input.mapper';
+import { mapCreateHabitInputToCreateEntityInput } from './mappers/map-create-input-to-create-entity-input';
 import { mapHabitEntityToHabitModel } from './mappers/map-habit-entity-to-habit-model';
 import { mapUpdateHabitModelToUpdateEntityInput } from './mappers/map-update-habit-input-to-update-entity-input';
 

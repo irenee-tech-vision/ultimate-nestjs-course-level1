@@ -4,6 +4,7 @@ import { InMemoryDbModule } from '../in-memory-db/in-memory-db.module';
 import { AppConfigModule } from '../app-config/app-config.module';
 import { AppConfigService } from '../app-config/app-config.service';
 import { MongoConnectionModule } from '../mongo-connection/mongo-connection.module';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({})
 export class CoreModule {
@@ -20,6 +21,16 @@ export class CoreModule {
           });
         case DbType.MONGO:
           return MongoConnectionModule.forRoot();
+        case DbType.MONGOOSE:
+          return MongooseModule.forRootAsync({
+            imports: [AppConfigModule],
+            useFactory: (appConfigService: AppConfigService) => {
+              return {
+                uri: appConfigService.mongoUri,
+              };
+            },
+            inject: [AppConfigService],
+          });
         default:
           throw new Error(`Unsupported db type: ${dbType}`);
       }

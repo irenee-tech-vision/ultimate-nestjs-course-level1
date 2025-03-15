@@ -2,6 +2,7 @@ import { DynamicModule, Module } from '@nestjs/common';
 import { InMemoryHabitsRepositoryModule } from './in-memory-habits-repository/in-memory-habits-repository.module';
 import { MongoHabitsRepositoryModule } from './mongo-habits-repository/mongo-habits-repository.module';
 import { DbType } from '../../db-type.enum';
+import { MongooseHabitsRepositoryModule } from './mongoose-habits-repository/mongoose-habits-repository.module';
 
 @Module({})
 export class HabitsRepositoryModule {
@@ -14,6 +15,9 @@ export class HabitsRepositoryModule {
         break;
       case DbType.MONGO:
         repositoryModule = MongoHabitsRepositoryModule;
+        break;
+      case DbType.MONGOOSE:
+        repositoryModule = MongooseHabitsRepositoryModule;
         break;
       default:
         throw new Error(
