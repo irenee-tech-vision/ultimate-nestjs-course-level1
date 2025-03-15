@@ -7,7 +7,7 @@ import { CreateEntityInput } from './models/create-entity-input.type';
 import { UpdateEntityInput } from './models/update-entity-input.type';
 import { FindAllQuery } from './models/find-all-query.type';
 import { FindOneQuery } from './models/find-one-query.type';
-import { PERSIST_DATA_PATH_TOKEN, SEED_DATA_TOKEN } from './constant';
+import { PERSIST_DATA_PATH_TOKEN, SEED_DATA_TOKEN } from './constants';
 
 @Injectable()
 export class InMemoryDbService {

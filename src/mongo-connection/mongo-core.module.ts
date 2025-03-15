@@ -2,7 +2,7 @@ import { Inject, Module, OnApplicationShutdown } from '@nestjs/common';
 import { MongoClient } from 'mongodb';
 import { AppConfigModule } from '../app-config/app-config.module';
 import { AppConfigService } from '../app-config/app-config.service';
-import { MONGO_CLIENT_TOKEN, MONGO_DB_TOKEN } from './constant';
+import { MONGO_CLIENT_TOKEN, MONGO_DB_TOKEN } from './constants';
 
 @Module({
   imports: [AppConfigModule],

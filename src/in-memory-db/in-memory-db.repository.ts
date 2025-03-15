@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InMemoryDbService } from './in-memory-db.service';
-import { REPOSITORY_ENTITY_NAME_TOKEN } from './constant';
+import { REPOSITORY_ENTITY_NAME_TOKEN } from './constants';
 import { StoreItemEntity } from './models/store-item.entity';
 import { CreateEntityInput } from './models/create-entity-input.type';
 import { FindOneQuery } from './models/find-one-query.type';

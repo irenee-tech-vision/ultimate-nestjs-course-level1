@@ -1,7 +1,7 @@
 import { FactoryProvider } from '@nestjs/common';
 import * as fs from 'fs';
 
-import { SEED_DATA_PATH_TOKEN, SEED_DATA_TOKEN } from './constant';
+import { SEED_DATA_PATH_TOKEN, SEED_DATA_TOKEN } from './constants';
 
 const dateReviver = (key: string, value: any) => {
   const isDate =

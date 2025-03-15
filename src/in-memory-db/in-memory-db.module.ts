@@ -8,7 +8,7 @@ import {
   PERSIST_DATA_PATH_TOKEN,
   REPOSITORY_ENTITY_NAME_TOKEN,
   SEED_DATA_PATH_TOKEN,
-} from './constant';
+} from './constants';
 import { InMemoryDbService } from './in-memory-db.service';
 import { SeedDataProvider } from './seed-data.provider';
 import { InMemoryDbRepository } from './in-memory-db.repository';

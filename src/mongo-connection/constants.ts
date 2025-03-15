@@ -1,0 +1,7 @@
+export const MONGO_CLIENT_TOKEN = Symbol('MONGO_CLIENT');
+
+export const MONGO_DB_TOKEN = Symbol('MONGO_DB');
+
+export const REPOSITORY_COLLECTION_NAME_TOKEN = Symbol(
+  'REPOSITORY_COLLECTION_NAME',
+);
