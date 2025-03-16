@@ -5,6 +5,8 @@ import { AppConfigModule } from '../app-config/app-config.module';
 import { AppConfigService } from '../app-config/app-config.service';
 import { MongoConnectionModule } from '../mongo-connection/mongo-connection.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { HabitEntity } from '../habits/repositories/typeorm-habits-repository/entities/habit.entity';
 
 @Module({})
 export class CoreModule {
@@ -29,6 +31,13 @@ export class CoreModule {
                 uri: appConfigService.mongoUri,
               };
             },
+            inject: [AppConfigService],
+          });
+        case DbType.TYPE_ORM:
+          return TypeOrmModule.forRootAsync({
+            imports: [AppConfigModule],
+            useFactory: (appConfigService: AppConfigService) =>
+              appConfigService.ormOptions,
             inject: [AppConfigService],
           });
         default:

@@ -3,6 +3,7 @@ import { InMemoryHabitsRepositoryModule } from './in-memory-habits-repository/in
 import { MongoHabitsRepositoryModule } from './mongo-habits-repository/mongo-habits-repository.module';
 import { DbType } from '../../db-type.enum';
 import { MongooseHabitsRepositoryModule } from './mongoose-habits-repository/mongoose-habits-repository.module';
+import { TypeormHabitsRepositoryModule } from './typeorm-habits-repository/typeorm-habits-repository.module';
 
 @Module({})
 export class HabitsRepositoryModule {
@@ -19,6 +20,8 @@ export class HabitsRepositoryModule {
       case DbType.MONGOOSE:
         repositoryModule = MongooseHabitsRepositoryModule;
         break;
+      case DbType.TYPE_ORM:
+        repositoryModule = TypeormHabitsRepositoryModule;
       default:
         throw new Error(
           `HabitsRepositoryModule does not support ${options.dbType}`,

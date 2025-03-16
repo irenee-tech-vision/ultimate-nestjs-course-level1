@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 @Injectable()
 export class AppConfigService {
@@ -15,5 +16,17 @@ export class AppConfigService {
 
   get mongoUri(): string {
     return this.configService.get<string>('MONGO_URI')!;
+  }
+
+  get ormOptions(): TypeOrmModuleOptions {
+    return {
+      type: this.configService.get<'postgres' | 'mysql'>('ORM_TYPE'),
+      host: this.configService.get<string>('ORM_HOST'),
+      port: this.configService.get<number>('ORM_PORT'),
+      password: this.configService.get<string>('ORM_PASSWORD'),
+      username: this.configService.get<string>('ORM_USERNAME'),
+      autoLoadEntities: true,
+      synchronize: this.configService.get<boolean>('ORM_SYNCHRONIZE'),
+    };
   }
 }

@@ -5,6 +5,16 @@ services:
       - 27017:27017
     volumes:
       - mongo_data:/data/db
+  postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: password
+    volumes:
+      - pg_data:/var/lib/postgresql/data
 volumes:
   mongo_data:
+    driver: local
+  pg_data:
     driver: local
