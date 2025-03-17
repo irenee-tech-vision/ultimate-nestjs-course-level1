@@ -112,5 +112,60 @@
       },
       "id": "87792271-8764-4cb3-802b-f6a0d69b6e09"
     }
+  ],
+  "users": [
+    {
+      "username": "emma_walker",
+      "email": "emma.walker@example.com",
+      "password": "securePassword123",
+      "firstName": "Emma",
+      "lastName": "Walker",
+      "userId": 1742204280052,
+      "createdAt": "2025-03-17T09:38:00.052Z",
+      "updatedAt": "2025-03-17T09:39:49.548Z",
+      "id": "bf441d24-0b1f-4809-90b2-9b850f2fa6ca"
+    },
+    {
+      "username": "michael.jones",
+      "email": "michael.jones@example.com",
+      "password": "superSecret456",
+      "firstName": "Michael",
+      "lastName": "Jones",
+      "userId": 1742204292975,
+      "createdAt": "2025-03-17T09:38:12.975Z",
+      "updatedAt": "2025-03-17T09:38:12.975Z",
+      "id": "6db4c169-a5ba-4bb5-bdba-bd5318832110"
+    },
+    {
+      "username": "sarahb",
+      "email": "sarah.brown@example.com",
+      "password": "randomPass789",
+      "firstName": "Sarah",
+      "lastName": "Brown",
+      "userId": 1742204302684,
+      "createdAt": "2025-03-17T09:38:22.684Z",
+      "updatedAt": "2025-03-17T09:38:22.684Z",
+      "id": "585731f0-2b12-4cb5-a93f-eba73b42422f"
+    },
+    {
+      "username": "david_smith",
+      "email": "david.smith@example.com",
+      "password": "mypasswordXYZ",
+      "userId": 1742204310919,
+      "createdAt": "2025-03-17T09:38:30.919Z",
+      "updatedAt": "2025-03-17T09:38:30.919Z",
+      "id": "af5462c0-1aa9-415d-af2d-9e8c5a9e9f2b"
+    },
+    {
+      "username": "olivia_t",
+      "email": "olivia.thomas@example.com",
+      "password": "simplePass2024",
+      "firstName": "Olivia",
+      "lastName": "Thomas",
+      "userId": 1742204318577,
+      "createdAt": "2025-03-17T09:38:38.577Z",
+      "updatedAt": "2025-03-17T09:38:38.577Z",
+      "id": "ca568f55-2cbc-4908-9d52-43b3f7f135c2"
+    }
   ]
 }

@@ -15,9 +15,9 @@ import { HabitsService } from '../services/habits.service';
 import { CreateHabitDto } from './dto/create-habit.dto';
 import { HabitDto } from './dto/habit.dto';
 import { UpdateHabitDto } from './dto/update-habit.dto';
+import { mapCreateHabitDtoToCreateHabitInput } from './mappers/map-create-habit-dto-create-to-habit-input';
 import { mapHabitModelToHabitDto } from './mappers/map-habit-model-to-habit-dto';
 import { mapUpdateHabitDtoToUpdateHabitInput } from './mappers/map-update-habit-dto-to-update-habit-input';
-import { mapCreateHabitDtoToCreateHabitInput } from './mappers/map-create-habit-dto-create-to-habit-input';
 
 @Controller('habits')
 export class HabitsController {
@@ -73,8 +73,8 @@ export class HabitsController {
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  remove(@Param('id') id: string): void | Promise<void> {
-    const habit = this.habitsService.remove(+id);
+  async remove(@Param('id') id: string): Promise<void> {
+    const habit = await this.habitsService.remove(+id);
 
     if (!habit) {
       throw new NotFoundException(`Habit with id ${id} not found`);

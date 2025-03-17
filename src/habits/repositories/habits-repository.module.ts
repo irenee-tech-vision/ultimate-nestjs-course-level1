@@ -22,6 +22,7 @@ export class HabitsRepositoryModule {
         break;
       case DbType.TYPE_ORM:
         repositoryModule = TypeormHabitsRepositoryModule;
+        break;
       default:
         throw new Error(
           `HabitsRepositoryModule does not support ${options.dbType}`,
