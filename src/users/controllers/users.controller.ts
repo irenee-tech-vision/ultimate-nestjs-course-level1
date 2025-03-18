@@ -14,7 +14,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto, createUserSchema } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDto } from './dto/user.dto';
 import { mapCreateUserDtoToCreateUserInput } from './mappers/map-create-user-dto-to-user-input';
@@ -27,6 +27,7 @@ import {
   isString,
 } from '../../lib/http-input-validation';
 import { ValidateDtoInputPipe } from '../../common/pipes/validate-dto-input/validate-dto-input.pipe';
+import { ValidateZodSchemaPipe } from '../../common/pipes/validate-zod-schema/validate-zod-schema.pipe';
 
 @Controller('users')
 export class UsersController {
@@ -59,7 +60,10 @@ export class UsersController {
   }
 
   @Post()
-  async create(@Body(ValidateDtoInputPipe) createUserInput: CreateUserDto): Promise<UserDto> {
+  async create(
+    @Body(new ValidateZodSchemaPipe(createUserSchema))
+    createUserInput: CreateUserDto,
+  ): Promise<UserDto> {
     const user = await this.usersService.create(
       mapCreateUserDtoToCreateUserInput(createUserInput),
     );
