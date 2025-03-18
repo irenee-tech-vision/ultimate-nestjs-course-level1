@@ -26,6 +26,7 @@ import {
   isRequired,
   isString,
 } from '../../lib/http-input-validation';
+import { ValidateDtoInputPipe } from '../../common/pipes/validate-dto-input/validate-dto-input.pipe';
 
 @Controller('users')
 export class UsersController {
@@ -58,31 +59,11 @@ export class UsersController {
   }
 
   @Post()
-  async create(@Body() createUserInput: CreateUserDto): Promise<UserDto> {
-    this.validateCreateUserInput(createUserInput)
+  async create(@Body(ValidateDtoInputPipe) createUserInput: CreateUserDto): Promise<UserDto> {
     const user = await this.usersService.create(
       mapCreateUserDtoToCreateUserInput(createUserInput),
     );
     return mapUserModelToUserDto(user)!;
-  }
-
-  private validateCreateUserInput(createUserInput: CreateUserDto) {
-    isRequired(createUserInput.username, 'username');
-    isString(createUserInput.username, 'username');
-    isNotEmptyString(createUserInput.username, 'username');
-
-    isRequired(createUserInput.email, 'email');
-    isString(createUserInput.email, 'email');
-    isNotEmptyString(createUserInput.username, 'email');
-
-    isRequired(createUserInput.password, 'password');
-    isString(createUserInput.password, 'password');
-    isNotEmptyString(createUserInput.password, 'password');
-    isMinLength(createUserInput.password, 'password', 8);
-
-    isString(createUserInput.firstName, 'firstName');
-
-    isString(createUserInput.lastName, 'lastName');
   }
 
   @Patch(':id')
@@ -90,7 +71,7 @@ export class UsersController {
     @Param('id', ParseIntPipe) id: number,
     @Body() input: UpdateUserDto,
   ): Promise<UserDto | undefined> {
-    this.validateUpdateUserDto(input)
+    this.validateUpdateUserDto(input);
     const user = await this.usersService.update(
       mapUpdateUserDtoToUpdateUserInput(id, input),
     );
@@ -103,19 +84,19 @@ export class UsersController {
   }
 
   private validateUpdateUserDto(updateUserInput: UpdateUserDto) {
-    isString(updateUserInput.username, "username");
-    isNotEmptyString(updateUserInput.username?.trim(), "username");
+    isString(updateUserInput.username, 'username');
+    isNotEmptyString(updateUserInput.username?.trim(), 'username');
 
-    isString(updateUserInput.email, "email");
-    isNotEmptyString(updateUserInput.email?.trim(), "email");
+    isString(updateUserInput.email, 'email');
+    isNotEmptyString(updateUserInput.email?.trim(), 'email');
 
-    isString(updateUserInput.password, "password");
-    isNotEmptyString(updateUserInput.password, "password");
-    isMinLength(updateUserInput.password!, "password", 8);
+    isString(updateUserInput.password, 'password');
+    isNotEmptyString(updateUserInput.password, 'password');
+    isMinLength(updateUserInput.password!, 'password', 8);
 
-    isString(updateUserInput.firstName, "firstName");
+    isString(updateUserInput.firstName, 'firstName');
 
-    isString(updateUserInput.lastName, "lastName");
+    isString(updateUserInput.lastName, 'lastName');
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
