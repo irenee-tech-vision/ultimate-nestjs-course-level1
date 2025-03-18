@@ -5,6 +5,10 @@ export const mapCreateUserDtoToCreateUserInput = (
   createUserDto: CreateUserDto,
 ): CreateUserInput => {
   return {
-    ...createUserDto,
+    username: createUserDto.username,
+    email: createUserDto.email,
+    password: createUserDto.password,
+    firstName: createUserDto.firstName,
+    lastName: createUserDto.lastName,
   };
 };

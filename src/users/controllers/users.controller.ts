@@ -20,6 +20,12 @@ import { UserDto } from './dto/user.dto';
 import { mapCreateUserDtoToCreateUserInput } from './mappers/map-create-user-dto-to-user-input';
 import { mapUpdateUserDtoToUpdateUserInput } from './mappers/map-update-user-dto-to-update-user-input';
 import { mapUserModelToUserDto } from './mappers/map-user-model-to-user-dto';
+import {
+  isMinLength,
+  isNotEmptyString,
+  isRequired,
+  isString,
+} from '../../lib/http-input-validation';
 
 @Controller('users')
 export class UsersController {
@@ -53,10 +59,30 @@ export class UsersController {
 
   @Post()
   async create(@Body() createUserInput: CreateUserDto): Promise<UserDto> {
+    this.validateCreateUserInput(createUserInput)
     const user = await this.usersService.create(
       mapCreateUserDtoToCreateUserInput(createUserInput),
     );
     return mapUserModelToUserDto(user)!;
+  }
+
+  private validateCreateUserInput(createUserInput: CreateUserDto) {
+    isRequired(createUserInput.username, 'username');
+    isString(createUserInput.username, 'username');
+    isNotEmptyString(createUserInput.username, 'username');
+
+    isRequired(createUserInput.email, 'email');
+    isString(createUserInput.email, 'email');
+    isNotEmptyString(createUserInput.username, 'email');
+
+    isRequired(createUserInput.password, 'password');
+    isString(createUserInput.password, 'password');
+    isNotEmptyString(createUserInput.password, 'password');
+    isMinLength(createUserInput.password, 'password', 8);
+
+    isString(createUserInput.firstName, 'firstName');
+
+    isString(createUserInput.lastName, 'lastName');
   }
 
   @Patch(':id')
@@ -64,6 +90,7 @@ export class UsersController {
     @Param('id', ParseIntPipe) id: number,
     @Body() input: UpdateUserDto,
   ): Promise<UserDto | undefined> {
+    this.validateUpdateUserDto(input)
     const user = await this.usersService.update(
       mapUpdateUserDtoToUpdateUserInput(id, input),
     );
@@ -73,6 +100,22 @@ export class UsersController {
     }
 
     return mapUserModelToUserDto(user);
+  }
+
+  private validateUpdateUserDto(updateUserInput: UpdateUserDto) {
+    isString(updateUserInput.username, "username");
+    isNotEmptyString(updateUserInput.username?.trim(), "username");
+
+    isString(updateUserInput.email, "email");
+    isNotEmptyString(updateUserInput.email?.trim(), "email");
+
+    isString(updateUserInput.password, "password");
+    isNotEmptyString(updateUserInput.password, "password");
+    isMinLength(updateUserInput.password!, "password", 8);
+
+    isString(updateUserInput.firstName, "firstName");
+
+    isString(updateUserInput.lastName, "lastName");
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)

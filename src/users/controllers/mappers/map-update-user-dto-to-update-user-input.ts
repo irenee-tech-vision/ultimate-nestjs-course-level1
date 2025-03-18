@@ -6,7 +6,11 @@ export const mapUpdateUserDtoToUpdateUserInput = (
   updateUserDto: UpdateUserDto,
 ): UpdateUserInput => {
   return {
-    ...updateUserDto,
+    username: updateUserDto.username,
+    email: updateUserDto.email,
+    password: updateUserDto.password,
+    firstName: updateUserDto.firstName,
+    lastName: updateUserDto.lastName,
     userId: id,
   };
 };
