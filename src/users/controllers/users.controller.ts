@@ -28,6 +28,7 @@ import {
 } from '../../lib/http-input-validation';
 import { ValidateDtoInputPipe } from '../../common/pipes/validate-dto-input/validate-dto-input.pipe';
 import { ValidateZodSchemaPipe } from '../../common/pipes/validate-zod-schema/validate-zod-schema.pipe';
+import { ValidateClassPipe } from '../../common/pipes/validate-class/validate-class.pipe';
 
 @Controller('users')
 export class UsersController {
@@ -73,7 +74,7 @@ export class UsersController {
   @Patch(':id')
   async update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() input: UpdateUserDto,
+    @Body(ValidateClassPipe) input: UpdateUserDto,
   ): Promise<UserDto | undefined> {
     this.validateUpdateUserDto(input);
     const user = await this.usersService.update(
