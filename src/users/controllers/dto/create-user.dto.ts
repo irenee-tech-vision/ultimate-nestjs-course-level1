@@ -4,6 +4,7 @@ import {
   isNotEmptyString,
   isMinLength,
   isString,
+  isDate,
 } from '../../../lib/http-input-validation';
 
 export class CreateUserDto extends DtoInput {
@@ -12,6 +13,7 @@ export class CreateUserDto extends DtoInput {
   password: string;
   firstName?: string;
   lastName?: string;
+  dateOfBirth?: Date;
 
   validate(createUserInput: CreateUserDto): void {
     isRequired(createUserInput.username, 'username');
@@ -30,5 +32,22 @@ export class CreateUserDto extends DtoInput {
     isString(createUserInput.firstName, 'firstName');
 
     isString(createUserInput.lastName, 'lastName');
+
+    isDate(createUserInput.dateOfBirth, 'dateOfBirth');
+  }
+
+  toInstance(value: CreateUserDto): CreateUserDto {
+    const dto = new CreateUserDto();
+
+    dto.username = value.username;
+    dto.email = value.email;
+    dto.password = value.password;
+    dto.firstName = value.firstName;
+    dto.lastName = value.lastName;
+    dto.dateOfBirth = value.dateOfBirth
+      ? new Date(value.dateOfBirth)
+      : undefined;
+
+    return dto;
   }
 }

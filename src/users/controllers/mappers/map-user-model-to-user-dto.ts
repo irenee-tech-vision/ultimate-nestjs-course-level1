@@ -14,5 +14,6 @@ export const mapUserModelToUserDto = (
     email: user.email,
     firstName: user.firstName,
     lastName: user.lastName,
+    dateOfBirth: user.dateOfBirth,
   };
 };

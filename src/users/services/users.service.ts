@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { AppConfigService } from '../../app-config/app-config.service';
 import { CreateUserInput } from './models/create-user.input';
 import { FindAllUsersQuery } from './models/find-all-users-query.type';
@@ -27,6 +27,12 @@ export class UsersService {
   }
 
   create(createUserInput: CreateUserInput): UserModel | Promise<UserModel> {
+    if (createUserInput.dateOfBirth) {
+      // console.log(typeof createUserInput.dateOfBirth);
+      console.log(
+        `The new user was born in the year ${createUserInput.dateOfBirth.getFullYear()}`,
+      );
+    }
     return this.usersRepository.createUser(createUserInput);
   }
 

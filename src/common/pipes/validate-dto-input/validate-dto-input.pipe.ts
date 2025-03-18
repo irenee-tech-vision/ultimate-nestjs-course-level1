@@ -9,6 +9,7 @@ export class ValidateDtoInputPipe implements PipeTransform {
     if (isDtoInput) {
       const dto = new metadata.metatype();
       dto.validate(value);
+      return dto.toInstance(value);
     }
 
     return value;

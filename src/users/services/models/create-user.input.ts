@@ -4,4 +4,5 @@ export class CreateUserInput {
   password: string;
   firstName?: string;
   lastName?: string;
+  dateOfBirth?: Date;
 }

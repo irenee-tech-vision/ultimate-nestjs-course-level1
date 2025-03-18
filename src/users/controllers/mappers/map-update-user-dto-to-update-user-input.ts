@@ -11,6 +11,7 @@ export const mapUpdateUserDtoToUpdateUserInput = (
     password: updateUserDto.password,
     firstName: updateUserDto.firstName,
     lastName: updateUserDto.lastName,
+    dateOfBirth: updateUserDto.dateOfBirth,
     userId: id,
   };
 };

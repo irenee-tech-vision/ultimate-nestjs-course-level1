@@ -10,5 +10,6 @@ export const mapCreateUserDtoToCreateUserInput = (
     password: createUserDto.password,
     firstName: createUserDto.firstName,
     lastName: createUserDto.lastName,
+    dateOfBirth: createUserDto.dateOfBirth
   };
 };
