@@ -1,5 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { AppConfigService } from '../../app-config/app-config.service';
+import { ValidationError } from '../../common/exceptions/validation-error';
+import { getPasswordStrength } from '../../lib/password-strength/get-password-strength';
+import { PasswordStrengthEnum } from '../../lib/password-strength/password-strength.enum';
 import { CreateUserInput } from './models/create-user.input';
 import { FindAllUsersQuery } from './models/find-all-users-query.type';
 import { UpdateUserInput } from './models/update-user.input';
@@ -27,12 +30,12 @@ export class UsersService {
   }
 
   create(createUserInput: CreateUserInput): UserModel | Promise<UserModel> {
-    if (createUserInput.dateOfBirth) {
-      // console.log(typeof createUserInput.dateOfBirth);
-      console.log(
-        `The new user was born in the year ${createUserInput.dateOfBirth.getFullYear()}`,
-      );
+    const passwordStrength = getPasswordStrength(createUserInput.password);
+
+    if (passwordStrength === PasswordStrengthEnum.WEAK) {
+      throw new ValidationError('Password too weak');
     }
+
     return this.usersRepository.createUser(createUserInput);
   }
 

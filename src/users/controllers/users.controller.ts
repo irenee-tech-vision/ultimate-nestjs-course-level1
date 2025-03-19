@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -10,7 +11,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Query
+  Query,
 } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -20,6 +21,7 @@ import { UserDto } from './dto/user.dto';
 import { mapCreateUserDtoToCreateUserInput } from './mappers/map-create-user-dto-to-user-input';
 import { mapUpdateUserDtoToUpdateUserInput } from './mappers/map-update-user-dto-to-update-user-input';
 import { mapUserModelToUserDto } from './mappers/map-user-model-to-user-dto';
+import { ValidationError } from '../../common/exceptions/validation-error';
 
 @Controller('users')
 export class UsersController {
@@ -53,11 +55,18 @@ export class UsersController {
     @Body()
     createUserInput: CreateUserDto,
   ): Promise<UserDto> {
-    console.log(createUserInput);
-    const user = await this.usersService.create(
-      mapCreateUserDtoToCreateUserInput(createUserInput),
-    );
-    return mapUserModelToUserDto(user)!;
+    try {
+      const user = await this.usersService.create(
+        mapCreateUserDtoToCreateUserInput(createUserInput),
+      );
+      return mapUserModelToUserDto(user)!;
+    } catch (error) {
+      if (error instanceof ValidationError) {
+        throw new BadRequestException(error.message);
+      }
+
+      throw error;
+    }
   }
 
   @Patch(':id')
