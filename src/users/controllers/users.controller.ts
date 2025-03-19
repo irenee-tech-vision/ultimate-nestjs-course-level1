@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -12,8 +13,11 @@ import {
   Patch,
   Post,
   Query,
+  SerializeOptions,
   UseInterceptors,
 } from '@nestjs/common';
+import { ValidationError } from '../../common/exceptions/validation-error';
+import { RedactResponseInterceptor } from '../../common/interceptors/redact-response/redact-response.interceptor';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { FindAllUsersQueryDto } from './dto/find-all-users-query.dto';
@@ -22,10 +26,12 @@ import { UserDto } from './dto/user.dto';
 import { mapCreateUserDtoToCreateUserInput } from './mappers/map-create-user-dto-to-user-input';
 import { mapUpdateUserDtoToUpdateUserInput } from './mappers/map-update-user-dto-to-update-user-input';
 import { mapUserModelToUserDto } from './mappers/map-user-model-to-user-dto';
-import { ValidationError } from '../../common/exceptions/validation-error';
-import { RedactResponseInterceptor } from '../../common/interceptors/redact-response/redact-response.interceptor';
 
-@UseInterceptors(RedactResponseInterceptor)
+@UseInterceptors(RedactResponseInterceptor, ClassSerializerInterceptor)
+@SerializeOptions({
+  type: UserDto,
+  excludeExtraneousValues: true,
+})
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
