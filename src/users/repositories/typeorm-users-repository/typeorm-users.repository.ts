@@ -72,7 +72,7 @@ export class TypeormUsersRepository implements UsersRepository {
       return undefined;
     }
 
-    const result = await this.repository.delete(userEntity);
+    const result = await this.repository.delete(userEntity.userId);
     if (result.affected === 0) {
       return undefined;
     }

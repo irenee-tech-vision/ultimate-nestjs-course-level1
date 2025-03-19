@@ -22,6 +22,9 @@ export class UserEntity {
 
   @Prop()
   lastName?: string;
+
+  @Prop()
+  dateOfBirth?: Date;
 }
 
 

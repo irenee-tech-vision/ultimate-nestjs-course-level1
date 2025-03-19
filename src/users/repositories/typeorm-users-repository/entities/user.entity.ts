@@ -19,4 +19,7 @@ export class UserEntity {
 
   @Column({ nullable: true })
   lastName?: string;
+
+  @Column({ nullable: true })
+  dateOfBirth?: Date;
 }
