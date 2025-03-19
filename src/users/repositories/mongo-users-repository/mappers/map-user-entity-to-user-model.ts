@@ -1,3 +1,4 @@
+import { plainToInstance } from 'class-transformer';
 import { UserModel } from '../../../services/models/user.model';
 import { UserEntity } from '../entities/user.entity';
 
@@ -8,7 +9,13 @@ export const mapUserEntityToUserModel = (
     return undefined;
   }
 
-  return {
-    ...entity,
-  };
+  return plainToInstance(
+    UserModel,
+    {
+      ...entity,
+    },
+    {
+      excludeExtraneousValues: true,
+    },
+  );
 };

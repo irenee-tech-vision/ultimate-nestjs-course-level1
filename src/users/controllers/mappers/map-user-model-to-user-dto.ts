@@ -1,3 +1,4 @@
+import { plainToInstance } from 'class-transformer';
 import { UserModel } from '../../services/models/user.model';
 import { UserDto } from '../dto/user.dto';
 
@@ -8,12 +9,14 @@ export const mapUserModelToUserDto = (
     return undefined;
   }
 
-  return {
-    id: user.userId,
-    username: user.username,
-    email: user.email,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    dateOfBirth: user.dateOfBirth,
-  };
+  return plainToInstance(
+    UserDto,
+    {
+      ...user,
+      id: user.userId,
+    },
+    {
+      excludeExtraneousValues: true,
+    },
+  );
 };
