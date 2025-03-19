@@ -74,15 +74,23 @@ export class UsersController {
     @Param('id', ParseIntPipe) id: number,
     @Body() input: UpdateUserDto,
   ): Promise<UserDto | undefined> {
-    const user = await this.usersService.update(
-      mapUpdateUserDtoToUpdateUserInput(id, input),
-    );
+    try {
+      const user = await this.usersService.update(
+        mapUpdateUserDtoToUpdateUserInput(id, input),
+      );
 
-    if (!user) {
-      throw new NotFoundException(`User with id ${id} not found`);
+      if (!user) {
+        throw new NotFoundException(`User with id ${id} not found`);
+      }
+
+      return mapUserModelToUserDto(user);
+    } catch (error) {
+      if (error instanceof ValidationError) {
+        throw new BadRequestException(error.message);
+      }
+
+      throw error;
     }
-
-    return mapUserModelToUserDto(user);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)

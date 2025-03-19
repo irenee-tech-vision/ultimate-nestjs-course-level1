@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { MongoServerError } from 'mongodb';
+import { ValidationError } from '../../../common/exceptions/validation-error';
 import { MongoRepository } from '../../../mongo-connection/mongo.repository';
 import { CreateUserInput } from '../../services/models/create-user.input';
 import { FindAllUsersQuery } from '../../services/models/find-all-users-query.type';
@@ -9,6 +11,8 @@ import { UserEntity } from './entities/user.entity';
 import { mapCreateUserInputToCreateEntityInput } from './mappers/map-create-user-input-to-create-entity-input';
 import { mapUpdateHabitModelToUpdateEntityInput } from './mappers/map-update-user-input-to-update-entity-input';
 import { mapUserEntityToUserModel } from './mappers/map-user-entity-to-user-model';
+
+const MONGO_DUPLICATE_KEY_ERROR = 11000;
 
 @Injectable()
 export class MongoUsersRepository implements UsersRepository {
@@ -28,21 +32,43 @@ export class MongoUsersRepository implements UsersRepository {
   }
 
   async createUser(createUserInput: CreateUserInput): Promise<UserModel> {
-    const userEntity = await this.repository.create(
-      mapCreateUserInputToCreateEntityInput(createUserInput),
-    );
-    return mapUserEntityToUserModel(userEntity)!;
+    try {
+      const userEntity = await this.repository.create(
+        mapCreateUserInputToCreateEntityInput(createUserInput),
+      );
+      return mapUserEntityToUserModel(userEntity)!;
+    } catch (error) {
+      if (
+        error instanceof MongoServerError &&
+        error.code === MONGO_DUPLICATE_KEY_ERROR
+      ) {
+        const duplicateField = Object.keys(error.keyValue)[0];
+        throw new ValidationError(`User with ${duplicateField} already exists`);
+      }
+      throw error;
+    }
   }
 
   async updateUser(
     updateUserInput: UpdateUserInput,
   ): Promise<UserModel | undefined> {
-    const userEntity = await this.repository.updateOneBy(
-      { userId: updateUserInput.userId },
-      mapUpdateHabitModelToUpdateEntityInput(updateUserInput),
-    );
+    try {
+      const userEntity = await this.repository.updateOneBy(
+        { userId: updateUserInput.userId },
+        mapUpdateHabitModelToUpdateEntityInput(updateUserInput),
+      );
 
-    return mapUserEntityToUserModel(userEntity);
+      return mapUserEntityToUserModel(userEntity);
+    } catch (error) {
+      if (
+        error instanceof MongoServerError &&
+        error.code === MONGO_DUPLICATE_KEY_ERROR
+      ) {
+        const duplicateField = Object.keys(error.keyValue)[0];
+        throw new ValidationError(`User with ${duplicateField} already exists`);
+      }
+      throw error;
+    }
   }
 
   async removeUser(userId: number): Promise<UserModel | undefined> {
