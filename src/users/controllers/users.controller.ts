@@ -64,18 +64,10 @@ export class UsersController {
     @Body()
     createUserInput: CreateUserDto,
   ): Promise<UserDto> {
-    try {
-      const user = await this.usersService.create(
-        mapCreateUserDtoToCreateUserInput(createUserInput),
-      );
-      return mapUserModelToUserDto(user)!;
-    } catch (error) {
-      if (error instanceof ValidationError) {
-        throw new BadRequestException(error.message);
-      }
-
-      throw error;
-    }
+    const user = await this.usersService.create(
+      mapCreateUserDtoToCreateUserInput(createUserInput),
+    );
+    return mapUserModelToUserDto(user)!;
   }
 
   @Patch(':id')
@@ -83,23 +75,15 @@ export class UsersController {
     @Param('id', ParseIntPipe) id: number,
     @Body() input: UpdateUserDto,
   ): Promise<UserDto | undefined> {
-    try {
-      const user = await this.usersService.update(
-        mapUpdateUserDtoToUpdateUserInput(id, input),
-      );
+    const user = await this.usersService.update(
+      mapUpdateUserDtoToUpdateUserInput(id, input),
+    );
 
-      if (!user) {
-        throw new NotFoundException(`User with id ${id} not found`);
-      }
-
-      return mapUserModelToUserDto(user);
-    } catch (error) {
-      if (error instanceof ValidationError) {
-        throw new BadRequestException(error.message);
-      }
-
-      throw error;
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
     }
+
+    return mapUserModelToUserDto(user);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)

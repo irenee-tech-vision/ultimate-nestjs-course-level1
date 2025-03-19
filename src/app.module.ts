@@ -6,11 +6,24 @@ import { CoreModule } from './core/core.module';
 import { DbType } from './db-type.enum';
 import { HabitsModule } from './habits/habits.module';
 import { UsersModule } from './users/users.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { AnalyticsInterceptor } from './common/interceptors/analytics/analytics.interceptor';
+import { ValidationErrorInterceptor } from './common/interceptors/validation-error/validation-error.interceptor';
 
 @Module({
   imports: [AnalyticsModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: AnalyticsInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ValidationErrorInterceptor,
+    },
+  ],
 })
 export class AppModule {
   static register(options: {
