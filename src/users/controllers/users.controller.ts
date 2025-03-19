@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  DefaultValuePipe,
   Delete,
   Get,
   HttpCode,
@@ -11,11 +10,11 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Query,
-  ValidationPipe,
+  Query
 } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { FindAllUsersQueryDto } from './dto/find-all-users-query.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDto } from './dto/user.dto';
 import { mapCreateUserDtoToCreateUserInput } from './mappers/map-create-user-dto-to-user-input';
@@ -28,13 +27,10 @@ export class UsersController {
 
   @Get()
   async findAll(
-    @Query('limit', ParseIntPipe, new DefaultValuePipe(1000)) limit: number,
-    @Query('sortBy') sortBy: 'username' | 'userId' | 'email',
+    @Query()
+    query: FindAllUsersQueryDto,
   ): Promise<UserDto[]> {
-    const users = await this.usersService.findAll({
-      limit,
-      sortBy,
-    });
+    const users = await this.usersService.findAll(query);
 
     return users.map((user) => mapUserModelToUserDto(user)!);
   }
@@ -54,14 +50,7 @@ export class UsersController {
 
   @Post()
   async create(
-    @Body(
-      new ValidationPipe({
-        transform: true,
-        whitelist: true,
-        forbidNonWhitelisted: true,
-        disableErrorMessages: true
-      }),
-    )
+    @Body()
     createUserInput: CreateUserDto,
   ): Promise<UserDto> {
     console.log(createUserInput);
@@ -74,7 +63,7 @@ export class UsersController {
   @Patch(':id')
   async update(
     @Param('id', ParseIntPipe) id: number,
-    @Body(ValidationPipe) input: UpdateUserDto,
+    @Body() input: UpdateUserDto,
   ): Promise<UserDto | undefined> {
     const user = await this.usersService.update(
       mapUpdateUserDtoToUpdateUserInput(id, input),
