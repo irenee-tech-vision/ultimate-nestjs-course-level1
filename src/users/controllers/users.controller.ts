@@ -12,6 +12,7 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -22,7 +23,9 @@ import { mapCreateUserDtoToCreateUserInput } from './mappers/map-create-user-dto
 import { mapUpdateUserDtoToUpdateUserInput } from './mappers/map-update-user-dto-to-update-user-input';
 import { mapUserModelToUserDto } from './mappers/map-user-model-to-user-dto';
 import { ValidationError } from '../../common/exceptions/validation-error';
+import { RedactResponseInterceptor } from '../../common/interceptors/redact-response/redact-response.interceptor';
 
+@UseInterceptors(RedactResponseInterceptor)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
