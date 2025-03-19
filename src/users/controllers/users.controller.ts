@@ -12,23 +12,15 @@ import {
   Patch,
   Post,
   Query,
+  ValidationPipe,
 } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
-import { CreateUserDto, createUserSchema } from './dto/create-user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDto } from './dto/user.dto';
 import { mapCreateUserDtoToCreateUserInput } from './mappers/map-create-user-dto-to-user-input';
 import { mapUpdateUserDtoToUpdateUserInput } from './mappers/map-update-user-dto-to-update-user-input';
 import { mapUserModelToUserDto } from './mappers/map-user-model-to-user-dto';
-import {
-  isMinLength,
-  isNotEmptyString,
-  isRequired,
-  isString,
-} from '../../lib/http-input-validation';
-import { ValidateDtoInputPipe } from '../../common/pipes/validate-dto-input/validate-dto-input.pipe';
-import { ValidateZodSchemaPipe } from '../../common/pipes/validate-zod-schema/validate-zod-schema.pipe';
-import { ValidateClassPipe } from '../../common/pipes/validate-class/validate-class.pipe';
 
 @Controller('users')
 export class UsersController {
@@ -62,9 +54,17 @@ export class UsersController {
 
   @Post()
   async create(
-    @Body(new ValidateZodSchemaPipe(createUserSchema))
+    @Body(
+      new ValidationPipe({
+        transform: true,
+        whitelist: true,
+        forbidNonWhitelisted: true,
+        disableErrorMessages: true
+      }),
+    )
     createUserInput: CreateUserDto,
   ): Promise<UserDto> {
+    console.log(createUserInput);
     const user = await this.usersService.create(
       mapCreateUserDtoToCreateUserInput(createUserInput),
     );
@@ -74,9 +74,8 @@ export class UsersController {
   @Patch(':id')
   async update(
     @Param('id', ParseIntPipe) id: number,
-    @Body(ValidateClassPipe) input: UpdateUserDto,
+    @Body(ValidationPipe) input: UpdateUserDto,
   ): Promise<UserDto | undefined> {
-    this.validateUpdateUserDto(input);
     const user = await this.usersService.update(
       mapUpdateUserDtoToUpdateUserInput(id, input),
     );
@@ -86,22 +85,6 @@ export class UsersController {
     }
 
     return mapUserModelToUserDto(user);
-  }
-
-  private validateUpdateUserDto(updateUserInput: UpdateUserDto) {
-    isString(updateUserInput.username, 'username');
-    isNotEmptyString(updateUserInput.username?.trim(), 'username');
-
-    isString(updateUserInput.email, 'email');
-    isNotEmptyString(updateUserInput.email?.trim(), 'email');
-
-    isString(updateUserInput.password, 'password');
-    isNotEmptyString(updateUserInput.password, 'password');
-    isMinLength(updateUserInput.password!, 'password', 8);
-
-    isString(updateUserInput.firstName, 'firstName');
-
-    isString(updateUserInput.lastName, 'lastName');
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)

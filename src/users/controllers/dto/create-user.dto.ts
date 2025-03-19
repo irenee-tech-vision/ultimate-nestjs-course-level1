@@ -1,12 +1,36 @@
-import { z } from 'zod';
+import { Type } from 'class-transformer';
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  IsEmail,
+  MinLength,
+  IsDate,
+} from 'class-validator';
 
-export const createUserSchema = z.object({
-  username: z.string().nonempty(),
-  email: z.string().email(),
-  password: z.string().min(8),
-  firstName: z.string().optional(),
-  lastName: z.string().optional(),
-  dateOfBirth: z.coerce.date().optional(),
-});
+export class CreateUserDto {
+  @IsString()
+  @IsNotEmpty()
+  username: string;
 
-export type CreateUserDto = z.infer<typeof createUserSchema>;
+  @IsEmail()
+  email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(8)
+  password: string;
+
+  @IsString()
+  @IsOptional()
+  firstName?: string;
+
+  @IsString()
+  @IsOptional()
+  lastName?: string;
+
+  @IsDate()
+  @IsOptional()
+  @Type(() => Date)
+  dateOfBirth?: Date;
+}
