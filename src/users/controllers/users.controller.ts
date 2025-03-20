@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   ClassSerializerInterceptor,
   Controller,
@@ -14,9 +13,8 @@ import {
   Post,
   Query,
   SerializeOptions,
-  UseInterceptors,
+  UseInterceptors
 } from '@nestjs/common';
-import { ValidationError } from '../../common/exceptions/validation-error';
 import { RedactResponseInterceptor } from '../../common/interceptors/redact-response/redact-response.interceptor';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto } from './dto/create-user.dto';

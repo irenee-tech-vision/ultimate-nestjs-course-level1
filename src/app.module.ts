@@ -1,14 +1,14 @@
 import { DynamicModule, Module } from '@nestjs/common';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { AnalyticsModule } from './analytics/analytics.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ValidationErrorFilter } from './common/filters/validation-error/validation-error.filter';
+import { AnalyticsInterceptor } from './common/interceptors/analytics/analytics.interceptor';
 import { CoreModule } from './core/core.module';
 import { DbType } from './db-type.enum';
 import { HabitsModule } from './habits/habits.module';
 import { UsersModule } from './users/users.module';
-import { APP_INTERCEPTOR } from '@nestjs/core';
-import { AnalyticsInterceptor } from './common/interceptors/analytics/analytics.interceptor';
-import { ValidationErrorInterceptor } from './common/interceptors/validation-error/validation-error.interceptor';
 
 @Module({
   imports: [AnalyticsModule],
@@ -20,8 +20,8 @@ import { ValidationErrorInterceptor } from './common/interceptors/validation-err
       useClass: AnalyticsInterceptor,
     },
     {
-      provide: APP_INTERCEPTOR,
-      useClass: ValidationErrorInterceptor,
+      provide: APP_FILTER,
+      useClass: ValidationErrorFilter,
     },
   ],
 })
