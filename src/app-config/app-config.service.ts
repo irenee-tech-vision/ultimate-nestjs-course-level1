@@ -29,4 +29,8 @@ export class AppConfigService {
       synchronize: this.configService.get<boolean>('ORM_SYNCHRONIZE'),
     };
   }
+
+  get superUserApiKey(): string {
+    return this.configService.get<string>('SUPER_USER_API_KEY')!;
+  }
 }

@@ -1,9 +1,9 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { AnalyticsModule } from './analytics/analytics.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AdminAuthenticationGuard } from './auth/guards/admin-authentication/admin-authentication.guard';
+import { AuthModule } from './auth/auth.module';
 import { ValidationErrorFilter } from './common/filters/validation-error/validation-error.filter';
 import { AnalyticsInterceptor } from './common/interceptors/analytics/analytics.interceptor';
 import { CoreModule } from './core/core.module';
@@ -12,7 +12,7 @@ import { HabitsModule } from './habits/habits.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
-  imports: [AnalyticsModule],
+  imports: [AnalyticsModule, AuthModule],
   controllers: [AppController],
   providers: [
     AppService,
@@ -23,10 +23,6 @@ import { UsersModule } from './users/users.module';
     {
       provide: APP_FILTER,
       useClass: ValidationErrorFilter,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: AdminAuthenticationGuard,
     },
   ],
 })

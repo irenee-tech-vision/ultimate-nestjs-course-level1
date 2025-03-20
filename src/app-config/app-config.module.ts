@@ -23,6 +23,8 @@ import * as Joi from 'joi';
         ORM_PASSWORD: Joi.string(),
         ORM_USERNAME: Joi.string(),
         ORM_SYNCHRONIZE: Joi.boolean().default(false),
+
+        SUPER_USER_API_KEY: Joi.string().optional().default('1234567890'),
       }),
     }),
   ],
