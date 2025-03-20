@@ -7,7 +7,7 @@ import {
 import { Response } from 'express';
 import { ValidationError } from '../../exceptions/validation-error';
 
-@Catch()
+@Catch(ValidationError)
 export class ValidationErrorFilter implements ExceptionFilter {
   catch(exception: ValidationError, host: ArgumentsHost) {
     const response = host.switchToHttp().getResponse<Response>();
