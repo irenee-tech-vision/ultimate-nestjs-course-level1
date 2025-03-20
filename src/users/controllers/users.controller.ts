@@ -3,7 +3,6 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Delete,
-  ForbiddenException,
   Get,
   HttpCode,
   HttpStatus,
@@ -13,12 +12,11 @@ import {
   Patch,
   Post,
   Query,
-  Req,
   SerializeOptions,
-  UnauthorizedException,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { AccessLevelEnum } from '../../auth/decorators/grant-access/access-level.enum';
+import { GrantAccess } from '../../auth/decorators/grant-access/grant-access.decorator';
 import { RedactResponseInterceptor } from '../../common/interceptors/redact-response/redact-response.interceptor';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -28,8 +26,6 @@ import { UserDto } from './dto/user.dto';
 import { mapCreateUserDtoToCreateUserInput } from './mappers/map-create-user-dto-to-user-input';
 import { mapUpdateUserDtoToUpdateUserInput } from './mappers/map-update-user-dto-to-update-user-input';
 import { mapUserModelToUserDto } from './mappers/map-user-model-to-user-dto';
-import { Request } from 'express';
-import { AdminAuthenticationGuard } from '../../auth/guards/admin-authentication/admin-authentication.guard';
 
 @UseInterceptors(RedactResponseInterceptor, ClassSerializerInterceptor)
 @SerializeOptions({
@@ -40,6 +36,7 @@ import { AdminAuthenticationGuard } from '../../auth/guards/admin-authentication
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @GrantAccess(AccessLevelEnum.SUPPORT_USER)
   @Get()
   async findAll(
     @Query()
@@ -50,6 +47,7 @@ export class UsersController {
     return users.map((user) => mapUserModelToUserDto(user)!);
   }
 
+  @GrantAccess(AccessLevelEnum.SUPPORT_USER)
   @Get(':id')
   async findOne(
     @Param('id', ParseIntPipe) id: number,
@@ -63,6 +61,7 @@ export class UsersController {
     return mapUserModelToUserDto(user);
   }
 
+  @GrantAccess(AccessLevelEnum.SYSTEM_USER)
   @Post()
   async create(
     @Body()
@@ -74,6 +73,7 @@ export class UsersController {
     return mapUserModelToUserDto(user)!;
   }
 
+  @GrantAccess(AccessLevelEnum.SYSTEM_USER)
   @Patch(':id')
   async update(
     @Param('id', ParseIntPipe) id: number,

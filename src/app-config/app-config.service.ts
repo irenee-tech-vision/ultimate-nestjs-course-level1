@@ -33,4 +33,12 @@ export class AppConfigService {
   get superUserApiKey(): string {
     return this.configService.get<string>('SUPER_USER_API_KEY')!;
   }
+
+  get systemUserApiKey(): string {
+    return this.configService.get<string>('SYSTEM_USER_API_KEY')!;
+  }
+
+  get supportUserApiKey(): string {
+    return this.configService.get<string>('SUPPORT_USER_API_KEY')!;
+  }
 }

@@ -1,0 +1,5 @@
+export enum AccessLevelEnum {
+  SUPER_USER = 'SUPER_USER',
+  SYSTEM_USER = 'SYSTEM_USER',
+  SUPPORT_USER = 'SUPPORT_USER',
+}

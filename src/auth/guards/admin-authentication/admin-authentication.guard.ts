@@ -18,7 +18,13 @@ export class AdminAuthenticationGuard implements CanActivate {
     const request = context.switchToHttp().getRequest<Request>();
     const headers = request.headers;
 
-    if (headers['x-api-key'] !== this.appConfigService.superUserApiKey) {
+    const apiKeys = [
+      this.appConfigService.superUserApiKey,
+      this.appConfigService.systemUserApiKey,
+      this.appConfigService.supportUserApiKey,
+    ];
+
+    if (!apiKeys.includes(headers['x-api-key'] as string)) {
       throw new UnauthorizedException('Invalid API Key');
     }
 
