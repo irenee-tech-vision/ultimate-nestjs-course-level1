@@ -1,5 +1,5 @@
 import { DynamicModule, Module, Type } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigType } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { AdminUsersConfigService } from './config/admin-users-config.service';
 import adminUsersConfig from './config/admin-users.config';
@@ -10,13 +10,31 @@ import { AuthService } from './auth.service';
 import { HashingModule } from '../hashing/hashing.module';
 import { UsersModule } from '../users/users.module';
 import { AuthController } from './auth.controller';
+import { JwtModule } from '@nestjs/jwt';
+import jwtOptionsConfig from './config/jwt-options.config';
+import { UserAuthGuard } from './guards/user-auth/user-auth.guard';
 
 @Module({
-  imports: [ConfigModule.forFeature(adminUsersConfig), HashingModule],
+  imports: [
+    ConfigModule.forFeature(adminUsersConfig),
+    HashingModule,
+    JwtModule.registerAsync({
+      imports: [ConfigModule.forFeature(jwtOptionsConfig)],
+      useFactory: (jwtOptions: ConfigType<typeof jwtOptionsConfig>) => {
+        return {
+          secret: jwtOptions.JWT_SECRET,
+          signOptions: {
+            expiresIn: jwtOptions.JWT_EXPIRES_IN,
+          },
+        };
+      },
+      inject: [jwtOptionsConfig.KEY],
+    }),
+  ],
   providers: [
     {
       provide: APP_GUARD,
-      useClass: AdminAuthGuard,
+      useClass: UserAuthGuard,
     },
     AdminAuthenticationGuard,
     AdminAuthorizationGuard,

@@ -1,10 +1,11 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { AdminUsersConfigService } from './config/admin-users-config.service';
-import { AdminUserModel } from './models/admin-user.model';
+import { JwtService } from '@nestjs/jwt';
 import { HashingService } from '../hashing/hashing.service';
 import { UsersService } from '../users/services/users.service';
-import { UserLoginDto } from './dto/user-login.dto';
+import { AdminUsersConfigService } from './config/admin-users-config.service';
 import { UserLoginSuccessDto } from './dto/user-login-success.dto';
+import { UserLoginDto } from './dto/user-login.dto';
+import { AdminUserModel } from './models/admin-user.model';
 
 @Injectable()
 export class AuthService {
@@ -12,6 +13,7 @@ export class AuthService {
     private readonly hashingService: HashingService,
     private readonly adminUsersConfigService: AdminUsersConfigService,
     private readonly usersService: UsersService,
+    private readonly jwtService: JwtService,
   ) {}
 
   async loginUser(loginDto: UserLoginDto): Promise<UserLoginSuccessDto> {
@@ -30,10 +32,13 @@ export class AuthService {
       throw authError;
     }
 
-    // FIXME: Generate real access token
+    const accessToken = await this.jwtService.signAsync({
+      username: user.username,
+    });
+
     return {
-      accessToken: 'fake-access-token'
-    }
+      accessToken,
+    };
   }
 
   async getAdminUserByApiKey(
