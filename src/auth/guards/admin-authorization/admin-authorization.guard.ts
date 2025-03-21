@@ -7,30 +7,16 @@ import {
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
 import { AppConfigService } from '../../../app-config/app-config.service';
-import { AccessLevelEnum } from '../../decorators/grant-access/access-level.enum';
+import { AccessLevelEnum } from '../../models/access-level.enum';
 import { GrantAccess } from '../../decorators/grant-access/grant-access.decorator';
+import { AuthService } from '../../auth.service';
 
 @Injectable()
 export class AdminAuthorizationGuard implements CanActivate {
-  private readonly accessMap: Map<AccessLevelEnum, string[]>;
-
   constructor(
-    private readonly appConfigService: AppConfigService,
     private readonly reflector: Reflector,
-  ) {
-    const superUserKey = this.appConfigService.superUserApiKey;
-    const systemUserKey = this.appConfigService.systemUserApiKey;
-    const supportUserKey = this.appConfigService.supportUserApiKey;
-
-    this.accessMap = new Map([
-      [AccessLevelEnum.SUPER_USER, [superUserKey]],
-      [AccessLevelEnum.SYSTEM_USER, [systemUserKey, superUserKey]],
-      [
-        AccessLevelEnum.SUPPORT_USER,
-        [supportUserKey, systemUserKey, superUserKey],
-      ],
-    ]);
-  }
+    private readonly authService: AuthService,
+  ) {}
 
   canActivate(
     context: ExecutionContext,
@@ -44,7 +30,10 @@ export class AdminAuthorizationGuard implements CanActivate {
     const request = context.switchToHttp().getRequest<Request>();
     const apiKey = request.headers['x-api-key'];
 
-    const isAuthorized = this.accessMap.get(accessLevel)?.includes(apiKey);
+    const adminUser = this.authService.getAdminUserByApiKey(apiKey);
+
+    const isAuthorized =
+      adminUser && this.hasRequiredAccess(adminUser.accessLevel, accessLevel);
 
     if (!isAuthorized) {
       throw new ForbiddenException(
@@ -53,5 +42,21 @@ export class AdminAuthorizationGuard implements CanActivate {
     }
 
     return true;
+  }
+
+  private hasRequiredAccess(
+    userLevel: AccessLevelEnum,
+    requiredLevel: AccessLevelEnum,
+  ): boolean {
+    const accessHierarchy = [
+      AccessLevelEnum.SUPPORT_USER,
+      AccessLevelEnum.SYSTEM_USER,
+      AccessLevelEnum.SUPER_USER,
+    ];
+
+    const userLevelIndex = accessHierarchy.indexOf(userLevel);
+    const requiredLevelIndex = accessHierarchy.indexOf(requiredLevel);
+
+    return userLevelIndex >= requiredLevelIndex;
   }
 }

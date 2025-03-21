@@ -7,27 +7,25 @@ import {
 import { Request } from 'express';
 import { Observable } from 'rxjs';
 import { AppConfigService } from '../../../app-config/app-config.service';
+import { AuthService } from '../../auth.service';
 
 @Injectable()
 export class AdminAuthenticationGuard implements CanActivate {
-  constructor(private readonly appConfigService: AppConfigService) {}
+  constructor(private readonly authService: AuthService) {}
 
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest<Request>();
     const headers = request.headers;
+    const apiKey = headers['x-api-key'];
 
-    const apiKeys = [
-      this.appConfigService.superUserApiKey,
-      this.appConfigService.systemUserApiKey,
-      this.appConfigService.supportUserApiKey,
-    ];
-
-    if (!apiKeys.includes(headers['x-api-key'] as string)) {
+    const adminUser = this.authService.getAdminUserByApiKey(apiKey as string);
+    if (!adminUser) {
       throw new UnauthorizedException('Invalid API Key');
     }
 
+    request['adminUser'] = adminUser;
     return true;
   }
 }

@@ -13,6 +13,7 @@ export class AnalyticsInterceptor implements NestInterceptor {
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const request = context.switchToHttp().getRequest();
+    const adminUser = request['adminUser'];
     const statTime = Date.now();
 
     return next.handle().pipe(
@@ -27,6 +28,7 @@ export class AnalyticsInterceptor implements NestInterceptor {
           method: request.method,
           statusCode: response.statusCode,
           responseTime,
+          adminUserEmail: adminUser?.email
         });
       }),
       catchError((error) => {
@@ -40,6 +42,7 @@ export class AnalyticsInterceptor implements NestInterceptor {
           statusCode: error.status,
           responseTime,
           error: error.message,
+          adminUserEmail: adminUser?.email
         });
 
         throw error;

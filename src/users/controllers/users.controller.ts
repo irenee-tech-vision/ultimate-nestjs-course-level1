@@ -12,10 +12,11 @@ import {
   Patch,
   Post,
   Query,
+  Req,
   SerializeOptions,
   UseInterceptors,
 } from '@nestjs/common';
-import { AccessLevelEnum } from '../../auth/decorators/grant-access/access-level.enum';
+import { AccessLevelEnum } from '../../auth/models/access-level.enum';
 import { GrantAccess } from '../../auth/decorators/grant-access/grant-access.decorator';
 import { RedactResponseInterceptor } from '../../common/interceptors/redact-response/redact-response.interceptor';
 import { UsersService } from '../services/users.service';
@@ -26,6 +27,8 @@ import { UserDto } from './dto/user.dto';
 import { mapCreateUserDtoToCreateUserInput } from './mappers/map-create-user-dto-to-user-input';
 import { mapUpdateUserDtoToUpdateUserInput } from './mappers/map-update-user-dto-to-update-user-input';
 import { mapUserModelToUserDto } from './mappers/map-user-model-to-user-dto';
+import { AdminUserModel } from '../../auth/models/admin-user.model';
+import { AdminUser } from '../../auth/decorators/admin-user/admin-user.decorator';
 
 @UseInterceptors(RedactResponseInterceptor, ClassSerializerInterceptor)
 @SerializeOptions({
@@ -92,7 +95,10 @@ export class UsersController {
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+  async remove(
+    @Param('id', ParseIntPipe) id: number,
+    @AdminUser() adminUser: AdminUserModel,
+  ): Promise<void> {
     const user = await this.usersService.remove(+id);
 
     if (!user) {
