@@ -18,9 +18,9 @@ export class AdminAuthorizationGuard implements CanActivate {
     private readonly authService: AuthService,
   ) {}
 
-  canActivate(
+  async canActivate(
     context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
+  ): Promise<boolean> {
     const accessLevel =
       this.reflector.getAllAndOverride(GrantAccess, [
         context.getHandler(),
@@ -30,11 +30,12 @@ export class AdminAuthorizationGuard implements CanActivate {
     const request = context.switchToHttp().getRequest<Request>();
     const apiKey = request.headers['x-api-key'];
 
-    const adminUser = this.authService.getAdminUserByApiKey(apiKey);
+    const adminUser = await this.authService.getAdminUserByApiKey(apiKey);
 
     const isAuthorized =
       adminUser && this.hasRequiredAccess(adminUser.accessLevel, accessLevel);
 
+      
     if (!isAuthorized) {
       throw new ForbiddenException(
         `Resource not accessible: You need at least ${accessLevel} access level`,

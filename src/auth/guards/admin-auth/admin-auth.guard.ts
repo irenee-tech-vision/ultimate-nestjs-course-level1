@@ -13,9 +13,7 @@ export class AdminAuthGuard implements CanActivate {
     private readonly reflector: Reflector,
   ) {}
 
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const isPublic = this.reflector.getAllAndOverride(IS_PUBLIC_METADATA_KEY, [
       context.getHandler(),
       context.getClass(),
@@ -24,10 +22,10 @@ export class AdminAuthGuard implements CanActivate {
     if (isPublic) {
       return true;
     }
-    
-    return (
-      this.authenticationGuard.canActivate(context) &&
-      this.authorizationGuard.canActivate(context)
-    );
+
+    const isAuthenticated = await this.authenticationGuard.canActivate(context);
+    const isAuthorized = await this.authorizationGuard.canActivate(context);
+
+    return isAuthenticated && isAuthorized;
   }
 }

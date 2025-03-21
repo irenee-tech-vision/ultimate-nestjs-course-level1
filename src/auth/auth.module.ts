@@ -7,9 +7,10 @@ import { AdminAuthGuard } from './guards/admin-auth/admin-auth.guard';
 import { AdminAuthenticationGuard } from './guards/admin-authentication/admin-authentication.guard';
 import { AdminAuthorizationGuard } from './guards/admin-authorization/admin-authorization.guard';
 import { AuthService } from './auth.service';
+import { HashingModule } from '../hashing/hashing.module';
 
 @Module({
-  imports: [ConfigModule.forFeature(adminUsersConfig)],
+  imports: [ConfigModule.forFeature(adminUsersConfig), HashingModule],
   providers: [
     {
       provide: APP_GUARD,
