@@ -13,6 +13,7 @@ import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import jwtOptionsConfig from './config/jwt-options.config';
 import { UserAuthGuard } from './guards/user-auth/user-auth.guard';
+import { AuthGuard } from './guards/auth/auth.guard';
 
 @Module({
   imports: [
@@ -34,8 +35,10 @@ import { UserAuthGuard } from './guards/user-auth/user-auth.guard';
   providers: [
     {
       provide: APP_GUARD,
-      useClass: UserAuthGuard,
+      useClass: AuthGuard,
     },
+    AdminAuthGuard,
+    UserAuthGuard,
     AdminAuthenticationGuard,
     AdminAuthorizationGuard,
     AdminUsersConfigService,

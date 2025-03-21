@@ -10,7 +10,7 @@ export class AppController {
     private readonly analyticsService: AnalyticsService,
   ) {}
 
-  @IsPublic(true)
+  @IsPublic()
   @Get()
   getHello(): string {
     this.analyticsService.saveAnalytics({

@@ -8,7 +8,7 @@ import { IsPublic } from './decorators/is-public/is-public.decorator';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @IsPublic(true)
+  @IsPublic()
   @Post('login')
   login(@Body() loginDto: UserLoginDto): Promise<UserLoginSuccessDto> {
     return this.authService.loginUser(loginDto);

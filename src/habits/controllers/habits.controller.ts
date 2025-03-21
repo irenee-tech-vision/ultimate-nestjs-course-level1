@@ -11,6 +11,8 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { SetAuthStrategy } from '../../auth/decorators/set-auth-strategy/set-auth-strategy.decorator';
+import { AuthStrategyEnum } from '../../auth/models/auth-strategy.enum';
 import { HabitsService } from '../services/habits.service';
 import { CreateHabitDto } from './dto/create-habit.dto';
 import { HabitDto } from './dto/habit.dto';
@@ -19,6 +21,7 @@ import { mapCreateHabitDtoToCreateHabitInput } from './mappers/map-create-habit-
 import { mapHabitModelToHabitDto } from './mappers/map-habit-model-to-habit-dto';
 import { mapUpdateHabitDtoToUpdateHabitInput } from './mappers/map-update-habit-dto-to-update-habit-input';
 
+@SetAuthStrategy(AuthStrategyEnum.USER_JWT)
 @Controller('habits')
 export class HabitsController {
   constructor(private readonly habitsService: HabitsService) {}

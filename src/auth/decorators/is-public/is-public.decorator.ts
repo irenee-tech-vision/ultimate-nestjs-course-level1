@@ -1,5 +1,4 @@
-import { SetMetadata } from '@nestjs/common';
-import { IS_PUBLIC_METADATA_KEY } from './constants';
+import { AuthStrategyEnum } from '../../models/auth-strategy.enum';
+import { SetAuthStrategy } from '../set-auth-strategy/set-auth-strategy.decorator';
 
-export const IsPublic = (isPublic: boolean) =>
-  SetMetadata(IS_PUBLIC_METADATA_KEY, isPublic);
+export const IsPublic = () => SetAuthStrategy(AuthStrategyEnum.NONE);
