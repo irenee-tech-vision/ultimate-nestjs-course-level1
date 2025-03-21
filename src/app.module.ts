@@ -12,7 +12,7 @@ import { HabitsModule } from './habits/habits.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
-  imports: [AnalyticsModule, AuthModule],
+  imports: [AnalyticsModule],
   controllers: [AppController],
   providers: [
     AppService,
@@ -34,14 +34,17 @@ export class AppModule {
     const { appDataDb, appAnalyticsDb } = options;
     const dbTypes = Array.from(new Set([appDataDb, appAnalyticsDb]));
 
+    const usersModule = UsersModule.register({ dbType: appDataDb });
+
     return {
       module: AppModule,
       imports: [
         HabitsModule.register({ dbType: appDataDb }),
-        UsersModule.register({ dbType: appDataDb }),
+        usersModule,
         CoreModule.forRoot({
           dbTypes,
         }),
+        AuthModule.withUsersModule(usersModule),
       ],
     };
   }

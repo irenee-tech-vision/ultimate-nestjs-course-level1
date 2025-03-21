@@ -10,6 +10,8 @@ export abstract class UsersRepository {
 
   abstract findUserById(userId: number): SyncOrAsync<Undefinable<UserModel>>;
 
+  abstract findUserByUsername(username: string): SyncOrAsync<Undefinable<UserModel>>;
+
   abstract createUser(createUserInput: CreateUserInput): SyncOrAsync<UserModel>;
 
   abstract updateUser(

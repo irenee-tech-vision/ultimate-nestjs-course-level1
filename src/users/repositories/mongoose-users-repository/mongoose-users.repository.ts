@@ -34,6 +34,10 @@ export class MongooseUsersRepository implements UsersRepository {
     return mapUserEntityToUserModel(userEntity);
   }
 
+  async findUserByUsername(username: string): Promise<UserModel | undefined> {
+    throw new Error('Method not implemented.');
+  }
+
   async createUser(createUserInput: CreateUserInput): Promise<UserModel> {
     const userEntity = await this.userModel.create(
       mapCreateUserInputToCreateEntityInput(createUserInput),

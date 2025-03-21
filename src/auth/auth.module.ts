@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { DynamicModule, Module, Type } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { AdminUsersConfigService } from './config/admin-users-config.service';
@@ -8,6 +8,8 @@ import { AdminAuthenticationGuard } from './guards/admin-authentication/admin-au
 import { AdminAuthorizationGuard } from './guards/admin-authorization/admin-authorization.guard';
 import { AuthService } from './auth.service';
 import { HashingModule } from '../hashing/hashing.module';
+import { UsersModule } from '../users/users.module';
+import { AuthController } from './auth.controller';
 
 @Module({
   imports: [ConfigModule.forFeature(adminUsersConfig), HashingModule],
@@ -21,5 +23,13 @@ import { HashingModule } from '../hashing/hashing.module';
     AdminUsersConfigService,
     AuthService,
   ],
+  controllers: [AuthController],
 })
-export class AuthModule {}
+export class AuthModule {
+  static withUsersModule(usersModule: Type | DynamicModule): DynamicModule {
+    return {
+      module: AuthModule,
+      imports: [usersModule],
+    };
+  }
+}

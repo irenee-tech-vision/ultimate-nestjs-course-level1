@@ -31,6 +31,11 @@ export class MongoUsersRepository implements UsersRepository {
     return mapUserEntityToUserModel(userEntity);
   }
 
+  async findUserByUsername(username: string): Promise<UserModel | undefined> {
+    const userEntity = await this.repository.findOneBy({ username });
+    return mapUserEntityToUserModel(userEntity);
+  }
+
   async createUser(createUserInput: CreateUserInput): Promise<UserModel> {
     try {
       const userEntity = await this.repository.create(

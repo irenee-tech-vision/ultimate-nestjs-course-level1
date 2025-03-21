@@ -27,6 +27,10 @@ export class InMemoryUsersRepository implements UsersRepository {
     return mapUserEntityToUserModel(userEntity);
   }
 
+  async findUserByUsername(username: string): Promise<UserModel | undefined> {
+    throw new Error('Method not implemented.');
+  }
+
   createUser(createUserInput: CreateUserInput): UserModel {
     const userEntity = this.db.create(
       mapCreateUserInputToCreateEntityInput(createUserInput),
