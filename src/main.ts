@@ -1,8 +1,9 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import * as cors from 'cors';
+import helmet  from 'helmet';
 import { AppModule } from './app.module';
 import { DbType } from './db-type.enum';
-import { AdminAuthenticationGuard } from './auth/guards/admin-authentication/admin-authentication.guard';
 
 async function bootstrap() {
   const appDataDb = (process.env.APP_DATA_DB as DbType) ?? DbType.IN_MEMORY;
@@ -13,6 +14,8 @@ async function bootstrap() {
       appAnalyticsDb: DbType.IN_MEMORY,
     }),
   );
+
+  app.use(cors(), helmet());
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -26,4 +29,5 @@ async function bootstrap() {
 
   await app.listen(process.env.PORT ?? 3000);
 }
+
 bootstrap();
