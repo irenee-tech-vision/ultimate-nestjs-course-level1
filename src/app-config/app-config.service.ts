@@ -41,4 +41,8 @@ export class AppConfigService {
   get supportUserApiKey(): string {
     return this.configService.get<string>('SUPPORT_USER_API_KEY')!;
   }
+
+  get maxBodySize(): number {
+    return this.configService.get<number>('MAX_BODY_SIZE')!;
+  }
 }

@@ -25,8 +25,12 @@ import * as Joi from 'joi';
         ORM_SYNCHRONIZE: Joi.boolean().default(false),
 
         SUPER_USER_API_KEY: Joi.string().optional().default('1234567890'),
-        SYSTEM_USER_API_KEY: Joi.string().optional().default("ABCDEFGHIJ"),
-        SUPPORT_USER_API_KEY: Joi.string().optional().default("abcdefghij"),
+        SYSTEM_USER_API_KEY: Joi.string().optional().default('ABCDEFGHIJ'),
+        SUPPORT_USER_API_KEY: Joi.string().optional().default('abcdefghij'),
+
+        MAX_BODY_SIZE: Joi.number()
+          .optional()
+          .default(1024 * 1024),
       }),
     }),
   ],

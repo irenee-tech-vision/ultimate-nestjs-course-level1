@@ -1,7 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import * as cors from 'cors';
-import helmet  from 'helmet';
+import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { DbType } from './db-type.enum';
 
