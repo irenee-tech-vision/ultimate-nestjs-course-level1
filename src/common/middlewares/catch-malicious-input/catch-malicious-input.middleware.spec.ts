@@ -1,29 +1,35 @@
-import { ConfigService } from '@nestjs/config';
-import { AppConfigService } from '../../../app-config/app-config.service';
+import { createMock } from '@golevelup/ts-jest';
+import { HttpStatus } from '@nestjs/common';
+import { Test } from '@nestjs/testing';
 import {
   createRequest,
   createResponse,
   MockRequest,
   MockResponse,
 } from 'node-mocks-http';
+import { AppConfigService } from '../../../app-config/app-config.service';
 import { CatchMaliciousInput } from './catch-malicious-input.middleware';
-import { HttpStatus } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
-import { AppConfigModule } from '../../../app-config/app-config.module';
 
 describe('CatchMaliciousInput', () => {
   let middleware: CatchMaliciousInput;
-  let appConfigService: AppConfigService;
+  const appConfigService = createMock<AppConfigService>({
+    get maxBodySize() {
+      return 10
+    }
+  })
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
-      providers: [CatchMaliciousInput],
-      imports: [AppConfigModule],
+      providers: [
+        CatchMaliciousInput,
+        {
+          provide: AppConfigService,
+          useValue: appConfigService,
+        },
+      ],
     }).compile();
 
     middleware = moduleRef.get<CatchMaliciousInput>(CatchMaliciousInput);
-    appConfigService = moduleRef.get<AppConfigService>(AppConfigService);
-
     jest.resetAllMocks();
   });
 
@@ -39,8 +45,6 @@ describe('CatchMaliciousInput', () => {
 
       beforeEach(() => {
         // Arrange
-        jest.spyOn(appConfigService, 'maxBodySize', 'get').mockReturnValue(10);
-
         request = createRequest({
           method: 'POST',
           body: { name: 'test', description: 'a' },
