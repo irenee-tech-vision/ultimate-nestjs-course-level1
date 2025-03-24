@@ -35,8 +35,9 @@ import { AuthGuard } from './guards/auth/auth.guard';
   providers: [
     {
       provide: APP_GUARD,
-      useClass: AuthGuard,
+      useExisting: AuthGuard,
     },
+    AuthGuard,
     AdminAuthGuard,
     UserAuthGuard,
     AdminAuthenticationGuard,
