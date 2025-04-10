@@ -32,7 +32,7 @@ jobs:
             npm install
             echo "🔨 Building app..."
             npm run build
-            echo "🚀 Restarting app: $DIGITALOCEAN_PM2_NAME"
-            pm2 restart "$DIGITALOCEAN_PM2_NAME"
+            echo "🚀 Restarting app"
+            pm2 restart ${{ vars.DIGITALOCEAN_PM2_NAME }}
             echo "✅ Deployment complete!"
           EOF
