@@ -1,3 +1,8 @@
+#!/bin/bash
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
 SERVICE_NAME=${SERVICE_NAME:-habits-tracker-api}
 
 echo "🔄 Pulling latest changes..."
