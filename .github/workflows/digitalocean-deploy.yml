@@ -1,0 +1,32 @@
+name: 🚀 Deploy on Push
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+        
+        
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.8.1
+        with:
+          ssh-private-key: ${{ secrets.DIGITALOCEAN_DEPLOY_KEY }}
+    
+      - name: Deploy to Droplet
+        run: |
+          ssh ${{ secrets.DIGITALOCEAN_DROPLET_USER }}@${{ secrets.DIGITALOCEAN_DROPLET_HOST }} << 'EOF'
+            cd ${{ vars.DIGITALOCEAN_APP_DIR }}
+            git pull origin master
+            npm install
+            npm run build
+            pm2 restart ${{ vars.DIGITALOCEAN_PM2_NAME }}
+            echo "✅ Deployment complete!"
+          EOF
