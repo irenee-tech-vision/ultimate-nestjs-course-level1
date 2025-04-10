@@ -21,11 +21,5 @@ jobs:
       - name: Deploy to Droplet
         run: |
           ssh-keyscan -H ${{ secrets.DIGITALOCEAN_DROPLET_HOST }} >> ~/.ssh/known_hosts
-          ssh -T ${{ secrets.DIGITALOCEAN_DROPLET_USER }}@${{ secrets.DIGITALOCEAN_DROPLET_HOST }} << 'EOF'
-            cd ${{ vars.DIGITALOCEAN_APP_DIR }}
-            git pull origin master
-            npm install
-            npm run build
-            pm2 restart ${{ vars.DIGITALOCEAN_PM2_NAME }}
-            echo "✅ Deployment complete!"
-          EOF
+          ssh -T ${{ secrets.DIGITALOCEAN_DROPLET_USER }}@${{ secrets.DIGITALOCEAN_DROPLET_HOST }} \
+          "cd ${{ vars.DIGITALOCEAN_APP_DIR }} && SERVICE_NAME=${{ vars.DIGITALOCEAN_PM2_NAME }} ./deploy.sh"
