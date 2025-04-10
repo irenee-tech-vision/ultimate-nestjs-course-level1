@@ -21,5 +21,18 @@ jobs:
       - name: Deploy to Droplet
         run: |
           ssh-keyscan -H ${{ secrets.DIGITALOCEAN_DROPLET_HOST }} >> ~/.ssh/known_hosts
-          ssh -T ${{ secrets.DIGITALOCEAN_DROPLET_USER }}@${{ secrets.DIGITALOCEAN_DROPLET_HOST }} \
-          "cd ${{ vars.DIGITALOCEAN_APP_DIR }} && SERVICE_NAME=${{ vars.DIGITALOCEAN_PM2_NAME }} ./deploy.sh"
+          ssh -T ${{ secrets.DIGITALOCEAN_DROPLET_USER }}@${{ secrets.DIGITALOCEAN_DROPLET_HOST }} << 'EOF'
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+            cd ${{ vars.DIGITALOCEAN_APP_DIR }}
+            echo "🔄 Pulling latest changes..."
+            git pull origin master
+            echo "📦 Installing dependencies..."
+            npm install
+            echo "🔨 Building app..."
+            npm run build
+            echo "🚀 Restarting app: $SERVICE_NAME"
+            pm2 restart "$SERVICE_NAME"
+            echo "✅ Deployment complete!"
+          EOF
