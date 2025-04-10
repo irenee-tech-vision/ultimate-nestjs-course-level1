@@ -20,7 +20,8 @@ jobs:
     
       - name: Deploy to Droplet
         run: |
-          ssh ${{ secrets.DIGITALOCEAN_DROPLET_USER }}@${{ secrets.DIGITALOCEAN_DROPLET_HOST }} << 'EOF'
+          ssh-keyscan -H ${{ secrets.DIGITALOCEAN_DROPLET_HOST }} >> ~/.ssh/known_hosts
+          ssh -T ${{ secrets.DIGITALOCEAN_DROPLET_USER }}@${{ secrets.DIGITALOCEAN_DROPLET_HOST }} << 'EOF'
             cd ${{ vars.DIGITALOCEAN_APP_DIR }}
             git pull origin master
             npm install
