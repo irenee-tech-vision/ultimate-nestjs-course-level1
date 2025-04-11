@@ -1,0 +1,39 @@
+name: 🚀 Deploy to EC2
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_DEPLOY_KEY }}
+        script: |
+          echo "⏳ Starting deployment..."
+
+      # - name: Deploy to Droplet
+      #   run: |
+      #     ssh-keyscan -H ${{ secrets.DIGITALOCEAN_DROPLET_HOST }} >> ~/.ssh/known_hosts
+      #     ssh -T ${{ secrets.DIGITALOCEAN_DROPLET_USER }}@${{ secrets.DIGITALOCEAN_DROPLET_HOST }} << 'EOF'
+      #       export NVM_DIR="$HOME/.nvm"
+      #       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+      #       cd ${{ vars.DIGITALOCEAN_APP_DIR }}
+      #       echo "🔄 Pulling latest changes..."
+      #       git pull origin master
+      #       echo "📦 Installing dependencies..."
+      #       npm install
+      #       echo "🔨 Building app..."
+      #       npm run build
+      #       echo "🚀 Restarting app"
+      #       pm2 restart ${{ vars.DIGITALOCEAN_PM2_NAME }}
+      #       echo "✅ Deployment complete!"
+      #     EOF
