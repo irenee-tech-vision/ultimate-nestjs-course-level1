@@ -16,8 +16,8 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_DEPLOY_KEY }}
-        script: |
-          echo "⏳ Starting deployment..."
+          script: |
+            echo "⏳ Starting deployment..."
 
       # - name: Deploy to Droplet
       #   run: |
