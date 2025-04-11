@@ -18,13 +18,17 @@ jobs:
           key: ${{ secrets.EC2_DEPLOY_KEY }}
           script: |
             echo "⏳ Starting deployment..."
-            cd ${{ vars.EC2_APP_DIR }}
+            echo "🔑 Setting up SSH..."
+            eval "$(ssh-agent -s)"
+            ssh-add ${{ secrets.EC2_GITHUB_KEY_PATH }}
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
             echo "🔄 Pulling latest changes..."
+            cd ${{ vars.EC2_APP_DIR }}
             git pull origin master
-            echo "📦 Installing dependencies..."
-            npm install
-            echo "🔨 Building app..."
-            npm run build
-            echo "🚀 Restarting app"
-            pm2 restart ${{ vars.EC2_PM2_NAME }}
-            echo "✅ Deployment complete!"
+          # echo "📦 Installing dependencies..."
+          # npm install
+          # echo "🔨 Building app..."
+          # npm run build
+          # echo "🚀 Restarting app"
+          # pm2 restart ${{ vars.EC2_PM2_NAME }}
+          # echo "✅ Deployment complete!"
