@@ -25,10 +25,12 @@ jobs:
             echo "🔄 Pulling latest changes..."
             cd ${{ vars.EC2_APP_DIR }}
             git pull origin master
-          # echo "📦 Installing dependencies..."
-          # npm install
-          # echo "🔨 Building app..."
-          # npm run build
-          # echo "🚀 Restarting app"
-          # pm2 restart ${{ vars.EC2_PM2_NAME }}
-          # echo "✅ Deployment complete!"
+            echo "📦 Installing dependencies..."
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            npm install
+            echo "🔨 Building app..."
+            npm run build
+            echo "🚀 Restarting app"
+            pm2 restart ${{ vars.EC2_PM2_NAME }}
+            echo "✅ Deployment complete!"
