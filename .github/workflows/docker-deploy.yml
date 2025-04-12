@@ -11,31 +11,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      # - name: Checkout code
+      #   uses: actions/checkout@v4
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+      # - name: Configure AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v2
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Log in to Amazon ECR
-        run: |
-          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | \
-          docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
+      # - name: Log in to Amazon ECR
+      #   run: |
+      #     aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | \
+      #     docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
 
-      - name: Build Docker image
-        run: |
-          docker build -t ${{ secrets.ECR_REPOSITORY }}:${{ github.sha }} .
-          docker tag ${{ secrets.ECR_REPOSITORY }}:${{ github.sha }} ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }}
-          docker tag ${{ secrets.ECR_REPOSITORY }}:${{ github.sha }} ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
+      # - name: Build Docker image
+      #   run: |
+      #     docker build -t ${{ secrets.ECR_REPOSITORY }}:${{ github.sha }} .
+      #     docker tag ${{ secrets.ECR_REPOSITORY }}:${{ github.sha }} ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }}
+      #     docker tag ${{ secrets.ECR_REPOSITORY }}:${{ github.sha }} ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
 
-      - name: Push to Amazon ECR
-        run: |
-          docker push ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }}
-          docker push ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
+      # - name: Push to Amazon ECR
+      #   run: |
+      #     docker push ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }}
+      #     docker push ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
 
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@v1
@@ -51,19 +51,18 @@ jobs:
               docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
 
             echo "📥 Pulling latest image..."
-            echo "pull: ${{ secrets.ECR_REGISTRY }}/${{ secrets.IMAGE_NAME }}:latest"
-            docker pull ${{ secrets.ECR_REGISTRY }}/${{ secrets.IMAGE_NAME }}:latest
+            docker pull ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
 
             echo "🛑 Stopping and removing old container (if exists)..."
-            docker stop ${{ secrets.IMAGE_NAME }}  || true
-            docker rm ${{ secrets.IMAGE_NAME }}  || true
+            docker stop ${{ secrets.CONTAINER_NAME }}  || true
+            docker rm ${{ secrets.CONTAINER_NAME }}  || true
 
             echo "🚀 Starting new container..."
             docker run -d \
-              --name ${{ secrets.IMAGE_NAME }} \
+              --name ${{ secrets.CONTAINER_NAME }} \
               --restart=always \
               --env-file /var/www/habits-tracker-api/.env \
               -p 3000:3000 \
-              ${{ secrets.ECR_REGISTRY }}/${{ secrets.IMAGE_NAME }}:latest
+              ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
 
             echo "✅ Deployment complete!"
