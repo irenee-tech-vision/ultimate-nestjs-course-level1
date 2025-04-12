@@ -1,9 +1,9 @@
 name: 🚀 Deploy to EC2
 
-on:
-  push:
-    branches:
-      - master
+# on:
+#   push:
+#     branches:
+#       - master
 
 jobs:
   deploy:

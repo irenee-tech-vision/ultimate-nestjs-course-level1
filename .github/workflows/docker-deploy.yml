@@ -51,6 +51,7 @@ jobs:
               docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
 
             echo "📥 Pulling latest image..."
+            echo "pull: ${{ secrets.ECR_REGISTRY }}/${{ secrets.IMAGE_NAME }}:latest"
             docker pull ${{ secrets.ECR_REGISTRY }}/${{ secrets.IMAGE_NAME }}:latest
 
             echo "🛑 Stopping and removing old container (if exists)..."
