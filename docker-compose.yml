@@ -13,19 +13,6 @@ services:
       POSTGRES_PASSWORD: password
     volumes:
       - pg_data:/var/lib/postgresql/data
-  habits-tracker-api:
-    build: .
-    ports:
-      - 3000:3000
-    depends_on:
-      - mongo
-      - postgres
-    env_file:
-      - .env
-    environment:
-      MONGO_URI: mongodb://host.docker.internal:27017/habit-tracker
-      ORM_HOST: host.docker.internal
-      APP_DATA_DB: TYPE_ORM
 volumes:
   mongo_data:
     driver: local
