@@ -19,11 +19,17 @@ jobs:
       - name: Build app
         run: npm run build
 
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_DEPLOY_KEY }}" > ~/.ssh/github-deploy.pem
+          chmod 600 ~/.ssh/github-deploy.pem
+
       - name: Deploy using custom script
         run: |
           chmod +x ./deploy.sh
           SKIP_GIT=true
-          LOCAL_KEY_PATH=${{ secrets.EC2_KEY }}
+          LOCAL_KEY_PATH=~/.ssh/github-deploy.pem \
           REMOTE_USER=${{ secrets.EC2_USER }} \
           REMOTE_HOST=${{ secrets.EC2_HOST }} \
           REMOTE_APP_PATH=${{ vars.EC2_APP_DIR }} \
