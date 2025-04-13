@@ -32,5 +32,5 @@ jobs:
           LOCAL_KEY_PATH=~/.ssh/github-deploy.pem \
           REMOTE_USER=${{ secrets.EC2_USER }} \
           REMOTE_HOST=${{ secrets.EC2_HOST }} \
-          REMOTE_APP_PATH=${{ vars.EC2_APP_DIR }} \
+          REMOTE_APP_PATH=${{ secrets.EC2_APP_DIR }} \
           ./deploy.sh
