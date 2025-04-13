@@ -18,7 +18,7 @@ jobs:
         with:
           switches: -avz --delete --exclude='.env' --exclude='node_modules'
           path: .
-          remote_path: ${{ vars.EC2_APP_DIR }}
+          remote_path: ${{ secrets.EC2_APP_DIR }}
           remote_host: ${{ secrets.EC2_HOST }}
           remote_user: ${{ secrets.EC2_USER }}
           remote_key: ${{ secrets.EC2_KEY }}
@@ -34,10 +34,10 @@ jobs:
             echo "📦 Installing dependencies..."
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            cd ${{ vars.EC2_APP_DIR }}
+            cd ${{ secrets.EC2_APP_DIR }}
             npm install
             echo "🔨 Building app..."
             npm run build
             echo "🚀 Restarting app"
-            pm2 restart ${{ vars.EC2_PM2_NAME }}
+            pm2 restart ${{ secrets.EC2_PM2_NAME }}
             echo "✅ Deployment complete!"
