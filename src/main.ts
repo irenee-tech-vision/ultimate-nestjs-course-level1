@@ -1,4 +1,4 @@
-import { ValidationPipe } from '@nestjs/common';
+import { ConsoleLogger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import * as cors from 'cors';
 import helmet from 'helmet';
@@ -13,6 +13,13 @@ async function bootstrap() {
       appDataDb,
       appAnalyticsDb: DbType.IN_MEMORY,
     }),
+    {
+      logger: new ConsoleLogger({
+        json: true,
+        colors: true,
+        compact: false,
+      })
+    }
   );
 
   app.use(cors(), helmet());
