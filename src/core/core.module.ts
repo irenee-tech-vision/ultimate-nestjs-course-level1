@@ -7,6 +7,7 @@ import { MongoConnectionModule } from '../mongo-connection/mongo-connection.modu
 import { MongooseModule } from '@nestjs/mongoose';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HabitEntity } from '../habits/repositories/typeorm-habits-repository/entities/habit.entity';
+import { LoggerModule } from '../logger/logger.module';
 
 @Module({})
 export class CoreModule {
@@ -47,7 +48,7 @@ export class CoreModule {
 
     return {
       module: CoreModule,
-      imports: coreModules,
+      imports: [...coreModules, LoggerModule],
     };
   }
 }

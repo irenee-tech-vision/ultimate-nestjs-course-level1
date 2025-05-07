@@ -19,7 +19,7 @@ async function bootstrap() {
     }
   );
 
-  app.useLogger(new AmazingLogger())
+  app.useLogger(app.get(AmazingLogger))
   app.use(cors(), helmet());
 
   app.useGlobalPipes(

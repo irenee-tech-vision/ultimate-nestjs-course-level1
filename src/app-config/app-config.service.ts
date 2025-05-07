@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, LogLevel } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
@@ -44,5 +44,9 @@ export class AppConfigService {
 
   get maxBodySize(): number {
     return this.configService.get<number>('MAX_BODY_SIZE')!;
+  }
+
+  get logLevel(): LogLevel {
+    return this.configService.get<LogLevel>("LOG_LEVEL")!;
   }
 }

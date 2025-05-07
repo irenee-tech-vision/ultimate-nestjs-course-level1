@@ -31,6 +31,11 @@ import * as Joi from 'joi';
         MAX_BODY_SIZE: Joi.number()
           .optional()
           .default(1024 * 1024),
+        
+        LOG_LEVEL: Joi.string()
+          .optional()
+          .valid("log", "error", "warn", "debug", "verbose", "fatal")
+          .default("debug"),
       }),
     }),
   ],

@@ -10,6 +10,7 @@ import { CoreModule } from './core/core.module';
 import { DbType } from './db-type.enum';
 import { HabitsModule } from './habits/habits.module';
 import { UsersModule } from './users/users.module';
+import { LoggerModule } from './logger/logger.module';
 
 @Module({
   imports: [AnalyticsModule],
