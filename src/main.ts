@@ -4,6 +4,7 @@ import * as cors from 'cors';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { DbType } from './db-type.enum';
+import { AmazingLogger } from './logger/amazing-logger';
 
 async function bootstrap() {
   const appDataDb = (process.env.APP_DATA_DB as DbType) ?? DbType.IN_MEMORY;
@@ -14,13 +15,11 @@ async function bootstrap() {
       appAnalyticsDb: DbType.IN_MEMORY,
     }),
     {
-      logger: new ConsoleLogger({
-        json: true,
-        colors: true,
-      })
+      bufferLogs: true
     }
   );
 
+  app.useLogger(new AmazingLogger())
   app.use(cors(), helmet());
 
   app.useGlobalPipes(
