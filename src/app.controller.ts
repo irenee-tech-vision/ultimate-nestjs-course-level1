@@ -5,7 +5,7 @@ import { IsPublic } from './auth/decorators/is-public/is-public.decorator';
 
 @Controller()
 export class AppController {
-  private logger = new Logger(AppController.name)
+  private logger = new Logger(AppController.name);
 
   constructor(
     private readonly appService: AppService,
@@ -15,7 +15,13 @@ export class AppController {
   @IsPublic()
   @Get()
   getHello(): string {
-    this.logger.log('this a message')
+    this.logger.log({
+      msg: 'Hello from the controller',
+      password: '123',
+      data: {
+        password: '123'
+      }
+    });
 
     this.analyticsService.saveAnalytics({
       message: 'Hello from the AppController',

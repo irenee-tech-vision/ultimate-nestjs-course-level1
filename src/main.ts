@@ -1,10 +1,10 @@
-import { ConsoleLogger, Logger, ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import * as cors from 'cors';
 import helmet from 'helmet';
+import { Logger as PinoLogger } from 'nestjs-pino';
 import { AppModule } from './app.module';
 import { DbType } from './db-type.enum';
-import { AmazingLogger } from './logger/amazing-logger';
 
 async function bootstrap() {
   const appDataDb = (process.env.APP_DATA_DB as DbType) ?? DbType.IN_MEMORY;
@@ -19,7 +19,7 @@ async function bootstrap() {
     }
   );
 
-  app.useLogger(app.get(AmazingLogger))
+  app.useLogger(app.get(PinoLogger))
   app.use(cors(), helmet());
 
   app.useGlobalPipes(
