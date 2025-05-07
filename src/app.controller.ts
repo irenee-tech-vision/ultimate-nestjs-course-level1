@@ -1,10 +1,12 @@
-import { Controller, Get } from '@nestjs/common';
+import { ConsoleLogger, Controller, Get, Logger } from '@nestjs/common';
 import { AnalyticsService } from './analytics/analytics.service';
 import { AppService } from './app.service';
 import { IsPublic } from './auth/decorators/is-public/is-public.decorator';
 
 @Controller()
 export class AppController {
+  private logger = new Logger(AppController.name)
+
   constructor(
     private readonly appService: AppService,
     private readonly analyticsService: AnalyticsService,
@@ -13,6 +15,8 @@ export class AppController {
   @IsPublic()
   @Get()
   getHello(): string {
+    this.logger.log('this a message')
+
     this.analyticsService.saveAnalytics({
       message: 'Hello from the AppController',
     });

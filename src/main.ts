@@ -1,4 +1,4 @@
-import { ConsoleLogger, ValidationPipe } from '@nestjs/common';
+import { ConsoleLogger, Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import * as cors from 'cors';
 import helmet from 'helmet';
@@ -17,7 +17,6 @@ async function bootstrap() {
       logger: new ConsoleLogger({
         json: true,
         colors: true,
-        compact: false,
       })
     }
   );
@@ -38,5 +37,6 @@ async function bootstrap() {
 }
 
 bootstrap().then(() => {
-  console.log('Server is running');
+  const logger = new Logger()
+  logger.log('Server is running');
 });
