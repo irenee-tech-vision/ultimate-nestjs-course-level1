@@ -1,11 +1,13 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cors from 'cors';
+import * as fs from 'fs/promises';
+import * as yaml from 'yaml';
 import helmet from 'helmet';
 import { Logger as PinoLogger } from 'nestjs-pino';
 import { AppModule } from './app.module';
 import { DbType } from './db-type.enum';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const appDataDb = (process.env.APP_DATA_DB as DbType) ?? DbType.IN_MEMORY;
@@ -46,6 +48,9 @@ async function bootstrap() {
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory());
+
+  await fs.writeFile('api.json', JSON.stringify(documentFactory(), null, 2));
+  await fs.writeFile('api.yaml', yaml.stringify(documentFactory()));
 
   await app.listen(process.env.PORT ?? 3000);
 }
