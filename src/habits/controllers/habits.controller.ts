@@ -20,12 +20,30 @@ import { UpdateHabitDto } from './dto/update-habit.dto';
 import { mapCreateHabitDtoToCreateHabitInput } from './mappers/map-create-habit-dto-create-to-habit-input';
 import { mapHabitModelToHabitDto } from './mappers/map-habit-model-to-habit-dto';
 import { mapUpdateHabitDtoToUpdateHabitInput } from './mappers/map-update-habit-dto-to-update-habit-input';
+import {
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
+@ApiTags('habits')
 @SetAuthStrategy(AuthStrategyEnum.USER_JWT)
 @Controller('habits')
 export class HabitsController {
   constructor(private readonly habitsService: HabitsService) {}
 
+  @ApiResponse({
+    status: 200,
+    description: 'A list of habits',
+    type: [HabitDto],
+  })
+  @ApiOperation({
+    summary: 'Get all habits',
+    description:
+      'Retrieves a list of all habits with optional pagination and sorting.',
+  })
   @Get()
   async findAll(
     @Query('limit') limit: string,
@@ -40,6 +58,18 @@ export class HabitsController {
     return habits.map((habit) => mapHabitModelToHabitDto(habit)!);
   }
 
+  @ApiOkResponse({
+    description: 'The habit matching the id',
+    type: HabitDto,
+  })
+  @ApiNotFoundResponse({
+    description: 'Habits is not found',
+    example: {
+      statusCode: 404,
+      message: "Habits with id 1 not found",
+      error: "Not Found",
+    }
+  })
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<HabitDto | undefined> {
     const habit = await this.habitsService.findOne(+id);
