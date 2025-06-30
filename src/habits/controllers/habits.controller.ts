@@ -7,6 +7,8 @@ import {
   HttpStatus,
   NotFoundException,
   Param,
+  ParseEnumPipe,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -24,9 +26,12 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiParam,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { HabitsSortByFieldEnum } from './dto/habits-sort-by-field.enum';
 
 @ApiTags('habits')
 @SetAuthStrategy(AuthStrategyEnum.USER_JWT)
@@ -44,10 +49,27 @@ export class HabitsController {
     description:
       'Retrieves a list of all habits with optional pagination and sorting.',
   })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'Limit the number of habits returned',
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'sortBy',
+    required: false,
+    description: 'Sort habits by a specific field',
+    enum: HabitsSortByFieldEnum,
+    enumName: 'HabitsSortByField',
+  })
   @Get()
   async findAll(
-    @Query('limit') limit: string,
-    @Query('sortBy') sortBy: 'name' | 'id',
+    @Query('limit', new ParseIntPipe({ optional: true })) limit?: number,
+    @Query(
+      'sortBy',
+      new ParseEnumPipe(HabitsSortByFieldEnum, { optional: true }),
+    )
+    sortBy?: HabitsSortByFieldEnum,
   ): Promise<HabitDto[]> {
     const limitNumber = limit ? +limit : undefined;
     const habits = await this.habitsService.findAll({
@@ -66,9 +88,13 @@ export class HabitsController {
     description: 'Habits is not found',
     example: {
       statusCode: 404,
-      message: "Habits with id 1 not found",
-      error: "Not Found",
-    }
+      message: 'Habits with id 1 not found',
+      error: 'Not Found',
+    },
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'The unique habit identifier',
   })
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<HabitDto | undefined> {
