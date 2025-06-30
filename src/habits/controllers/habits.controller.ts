@@ -14,12 +14,14 @@ import {
   Query,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
   ApiQuery,
   ApiResponse,
+  ApiSecurity,
   ApiTags
 } from '@nestjs/swagger';
 import { SetAuthStrategy } from '../../auth/decorators/set-auth-strategy/set-auth-strategy.decorator';
@@ -33,6 +35,7 @@ import { mapCreateHabitDtoToCreateHabitInput } from './mappers/map-create-habit-
 import { mapHabitModelToHabitDto } from './mappers/map-habit-model-to-habit-dto';
 import { mapUpdateHabitDtoToUpdateHabitInput } from './mappers/map-update-habit-dto-to-update-habit-input';
 
+@ApiBearerAuth()
 @ApiTags('habits')
 @SetAuthStrategy(AuthStrategyEnum.USER_JWT)
 @Controller('habits')

@@ -41,10 +41,6 @@ async function bootstrap() {
       name: 'x-api-key',
       in: 'header',
     })
-    .addSecurity('user', {
-      type: 'http',
-      scheme: 'bearer',
-    })
     .addBearerAuth()
     .build();
 

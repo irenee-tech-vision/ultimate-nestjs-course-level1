@@ -28,7 +28,9 @@ import { UserDto } from './dto/user.dto';
 import { mapCreateUserDtoToCreateUserInput } from './mappers/map-create-user-dto-to-user-input';
 import { mapUpdateUserDtoToUpdateUserInput } from './mappers/map-update-user-dto-to-update-user-input';
 import { mapUserModelToUserDto } from './mappers/map-user-model-to-user-dto';
+import { ApiSecurity } from '@nestjs/swagger';
 
+@ApiSecurity('admin')
 @UseInterceptors(RedactResponseInterceptor, ClassSerializerInterceptor)
 @SerializeOptions({
   type: UserDto,
