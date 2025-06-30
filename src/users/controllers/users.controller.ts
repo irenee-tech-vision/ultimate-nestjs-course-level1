@@ -38,6 +38,11 @@ import { mapUserModelToUserDto } from './mappers/map-user-model-to-user-dto';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  /**
+   * Retrieves a list of all users
+   *
+   * @remarks This operation allows you to retrieve a list of all users with optional sorting and limiting.
+   */
   @GrantAccess(AccessLevelEnum.SUPPORT_USER)
   @Get()
   async findAll(
@@ -49,6 +54,11 @@ export class UsersController {
     return users.map((user) => mapUserModelToUserDto(user)!);
   }
 
+  /**
+   * Finds a user by their ID
+   *
+   * @throws {404} NotFoundException if the user with the specified ID does not exist
+   */
   @GrantAccess(AccessLevelEnum.SUPPORT_USER)
   @Get(':id')
   async findOne(

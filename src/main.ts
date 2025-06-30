@@ -16,11 +16,11 @@ async function bootstrap() {
       appAnalyticsDb: DbType.IN_MEMORY,
     }),
     {
-      bufferLogs: true
-    }
+      bufferLogs: true,
+    },
   );
 
-  app.useLogger(app.get(PinoLogger))
+  app.useLogger(app.get(PinoLogger));
   app.use(cors(), helmet());
 
   app.useGlobalPipes(
@@ -34,17 +34,27 @@ async function bootstrap() {
   app.enableShutdownHooks();
 
   const config = new DocumentBuilder()
-    .setTitle("Habits Tracker API")
-    .setDescription("API that helps users track their habits")
-    .build()
+    .setTitle('Habits Tracker API')
+    .setDescription('API that helps users track their habits')
+    .addSecurity('admin', {
+      type: 'apiKey',
+      name: 'x-api-key',
+      in: 'header',
+    })
+    .addSecurity('user', {
+      type: 'http',
+      scheme: 'bearer',
+    })
+    .addBearerAuth()
+    .build();
 
-  const documentFactory = () => SwaggerModule.createDocument(app, config)
-  SwaggerModule.setup("api", app, documentFactory())
+  const documentFactory = () => SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, documentFactory());
 
   await app.listen(process.env.PORT ?? 3000);
 }
 
 bootstrap().then(() => {
-  const logger = new Logger()
+  const logger = new Logger();
   logger.log('Server is running');
 });

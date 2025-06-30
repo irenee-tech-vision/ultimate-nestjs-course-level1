@@ -13,15 +13,6 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { SetAuthStrategy } from '../../auth/decorators/set-auth-strategy/set-auth-strategy.decorator';
-import { AuthStrategyEnum } from '../../auth/models/auth-strategy.enum';
-import { HabitsService } from '../services/habits.service';
-import { CreateHabitDto } from './dto/create-habit.dto';
-import { HabitDto } from './dto/habit.dto';
-import { UpdateHabitDto } from './dto/update-habit.dto';
-import { mapCreateHabitDtoToCreateHabitInput } from './mappers/map-create-habit-dto-create-to-habit-input';
-import { mapHabitModelToHabitDto } from './mappers/map-habit-model-to-habit-dto';
-import { mapUpdateHabitDtoToUpdateHabitInput } from './mappers/map-update-habit-dto-to-update-habit-input';
 import {
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -29,9 +20,18 @@ import {
   ApiParam,
   ApiQuery,
   ApiResponse,
-  ApiTags,
+  ApiTags
 } from '@nestjs/swagger';
+import { SetAuthStrategy } from '../../auth/decorators/set-auth-strategy/set-auth-strategy.decorator';
+import { AuthStrategyEnum } from '../../auth/models/auth-strategy.enum';
+import { HabitsService } from '../services/habits.service';
+import { CreateHabitDto } from './dto/create-habit.dto';
+import { HabitDto } from './dto/habit.dto';
 import { HabitsSortByFieldEnum } from './dto/habits-sort-by-field.enum';
+import { UpdateHabitDto } from './dto/update-habit.dto';
+import { mapCreateHabitDtoToCreateHabitInput } from './mappers/map-create-habit-dto-create-to-habit-input';
+import { mapHabitModelToHabitDto } from './mappers/map-habit-model-to-habit-dto';
+import { mapUpdateHabitDtoToUpdateHabitInput } from './mappers/map-update-habit-dto-to-update-habit-input';
 
 @ApiTags('habits')
 @SetAuthStrategy(AuthStrategyEnum.USER_JWT)
