@@ -1,5 +1,6 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { DevtoolsModule } from '@nestjs/devtools-integration';
 import { AnalyticsModule } from './analytics/analytics.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -10,10 +11,14 @@ import { CoreModule } from './core/core.module';
 import { DbType } from './db-type.enum';
 import { HabitsModule } from './habits/habits.module';
 import { UsersModule } from './users/users.module';
-import { LoggerModule } from './logger/logger.module';
 
 @Module({
-  imports: [AnalyticsModule],
+  imports: [
+    AnalyticsModule,
+    DevtoolsModule.register({
+      http: process.env.NODE_END !== 'production',
+    }),
+  ],
   controllers: [AppController],
   providers: [
     AppService,

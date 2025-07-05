@@ -19,6 +19,7 @@ async function bootstrap() {
     }),
     {
       bufferLogs: true,
+      snapshot: true
     },
   );
 
