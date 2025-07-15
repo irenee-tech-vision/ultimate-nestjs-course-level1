@@ -2,10 +2,16 @@ import { Injectable, LogLevel } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
+/**
+ * Provides the application configuration for the app
+ */
 @Injectable()
 export class AppConfigService {
   constructor(private readonly configService: ConfigService) {}
 
+  /**
+   * test
+   */
   get seedDataFilePath(): string {
     return this.configService.get<string>('SEED_DATA_FILE_PATH')!;
   }

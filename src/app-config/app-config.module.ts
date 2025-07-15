@@ -3,6 +3,9 @@ import { AppConfigService } from './app-config.service';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 
+/**
+ * Configuration for our app
+ */
 @Module({
   imports: [
     ConfigModule.forRoot({
